@@ -195,6 +195,26 @@ if (typeof document !== "undefined") {
       )
     );
 
+  // Carrossel: rolagem nativa (scroll-snap) + botões; sem rotação automática
+  const faixa = document.getElementById("carrossel-faixa");
+  const controles = document.getElementById("carrossel-controles");
+  const [ant, prox] = controles.querySelectorAll("button");
+  const atualizarSetas = () => {
+    ant.disabled = faixa.scrollLeft < 4;
+    prox.disabled = faixa.scrollLeft + faixa.clientWidth >= faixa.scrollWidth - 4;
+  };
+  const passo = (dir) =>
+    faixa.scrollBy({
+      left: dir * (faixa.firstElementChild.offsetWidth + 16),
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
+  ant.addEventListener("click", () => passo(-1));
+  prox.addEventListener("click", () => passo(1));
+  faixa.addEventListener("scroll", atualizarSetas, { passive: true });
+  addEventListener("resize", atualizarSetas);
+  controles.hidden = false;
+  atualizarSetas();
+
   // Menu mobile
   const botaoMenu = document.getElementById("botao-menu");
   const menu = document.getElementById("menu");

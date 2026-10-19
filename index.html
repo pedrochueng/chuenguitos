@@ -71,6 +71,43 @@
         <p class="sobretitulo">Especialidades</p>
         <h2 id="titulo-especialidades">Encontre o cuidado que você procura</h2>
       </div>
+      <!-- PENDENTE: fotos de exemplo (Unsplash). Trocar por fotos autorizadas do espaço da clínica; para mais slides, copie um <li>. -->
+      <div class="carrossel revelar" role="region" aria-roledescription="carrossel" aria-label="Fotos do ambiente">
+        <ul class="carrossel__faixa" id="carrossel-faixa" tabindex="0">
+          <li>
+            <figure>
+              <img src="assets/images/carrossel-1.webp" alt="Poltrona ao lado de uma janela aberta com vista para as árvores e um vaso de planta" width="1000" height="700" loading="lazy">
+              <figcaption>Um lugar para respirar</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <img src="assets/images/carrossel-2.webp" alt="Estante com livros e plantas ao lado de uma janela iluminada" width="1000" height="700" loading="lazy">
+              <figcaption>Conhecimento e cuidado</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <img src="assets/images/carrossel-3.webp" alt="Mãos segurando uma xícara de chá quente, com agasalho de lã" width="1000" height="700" loading="lazy">
+              <figcaption>Escuta sem pressa</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <img src="assets/images/carrossel-4.webp" alt="Mesa com papéis coloridos, lápis e as mãos de uma criança desenhando" width="1000" height="700" loading="lazy">
+              <figcaption>O brincar como linguagem</figcaption>
+            </figure>
+          </li>
+        </ul>
+        <div class="carrossel__controles" id="carrossel-controles" hidden>
+          <button class="carrossel__botao carrossel__botao--ant" type="button" aria-controls="carrossel-faixa" aria-label="Foto anterior">
+            <svg class="icone" aria-hidden="true"><use href="assets/icons/icones.svg#i-seta"></use></svg>
+          </button>
+          <button class="carrossel__botao" type="button" aria-controls="carrossel-faixa" aria-label="Próxima foto">
+            <svg class="icone" aria-hidden="true"><use href="assets/icons/icones.svg#i-seta"></use></svg>
+          </button>
+        </div>
+      </div>
       <ul class="especialidades__lista" id="lista-especialidades"></ul>
       <noscript><p class="aviso">Para ver as especialidades e agendar, ative o JavaScript ou consulte a seção de contato.</p></noscript>
       <p class="nota revelar">O contato pelo WhatsApp inicia uma solicitação de agendamento. O horário é confirmado pela clínica.</p>

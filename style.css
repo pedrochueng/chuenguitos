@@ -196,6 +196,29 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1;
   background: var(--fundo-claro);
 }
+/* Carrossel de fotos */
+.carrossel { margin-bottom: clamp(2.5rem, 6vw, 4rem); }
+.carrossel__faixa {
+  display: flex; gap: 1rem; overflow-x: auto; padding-bottom: .5rem;
+  scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.carrossel__faixa::-webkit-scrollbar { display: none; }
+.carrossel__faixa li { flex: 0 0 min(82%, 26rem); scroll-snap-align: start; }
+.carrossel figure { position: relative; }
+.carrossel img { width: 100%; aspect-ratio: 10 / 7; object-fit: cover; border-radius: .5rem; background: var(--creme); }
+.carrossel figcaption { margin-top: .75rem; font-family: var(--fonte-titulo); font-style: italic; font-size: 1.1rem; color: var(--texto-suave); }
+.carrossel__controles { display: flex; justify-content: flex-end; gap: .75rem; margin-top: .5rem; }
+.carrossel__botao {
+  display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; cursor: pointer;
+  background: transparent; color: var(--terracota-escuro);
+  border: 1px solid var(--caramelo); border-radius: 50%;
+  transition: background-color .25s ease, color .25s ease;
+}
+.carrossel__botao:hover:not(:disabled) { background: var(--terracota-escuro); color: var(--branco); border-color: var(--terracota-escuro); }
+.carrossel__botao:disabled { opacity: .35; cursor: default; }
+.carrossel__botao--ant .icone { transform: rotate(180deg); }
+@media (min-width: 900px) { .carrossel__faixa li { flex-basis: 36%; } }
+
 .especialidades__lista { border-top: 1px solid var(--linha); }
 .especialidade {
   display: grid; gap: 1rem 2rem;
