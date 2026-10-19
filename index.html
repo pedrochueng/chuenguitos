@@ -59,10 +59,19 @@
           </a>
         </div>
       </div>
-      <figure class="hero__imagem">
-        <!-- PENDENTE: foto de exemplo (Unsplash). Trocar por foto autorizada da cliente. -->
-        <img src="assets/images/hero.webp" alt="Luz dourada de fim de tarde em um ambiente acolhedor, com uma planta ao lado" width="900" height="1125" fetchpriority="high">
-      </figure>
+      <!-- PENDENTE: fotos de exemplo (Unsplash). Trocar por fotos autorizadas da clínica; para mais fotos, copie um <img>. A primeira aparece sem JavaScript. -->
+      <div class="hero__visual">
+        <div class="hero__fotos" id="hero-fotos">
+          <img class="ativa" src="assets/images/hero/hero-1.webp" alt="Poltrona ao lado de uma janela aberta, com vista para as árvores" width="1000" height="1000" fetchpriority="high">
+          <img src="assets/images/hero/hero-2.webp" alt="Corredor claro com quadros de flores, luz quente e um canto com poltrona" width="1000" height="1000" loading="lazy" aria-hidden="true">
+          <img src="assets/images/hero/hero-3.webp" alt="Poltrona laranja em uma sala ampla, com janelas e vista da cidade" width="1000" height="1000" loading="lazy" aria-hidden="true">
+          <img src="assets/images/hero/hero-4.webp" alt="Luz dourada de fim de tarde em um ambiente acolhedor, com uma planta" width="1000" height="1000" loading="lazy" aria-hidden="true">
+        </div>
+        <button class="hero__pausa" id="hero-pausa" type="button" aria-pressed="false" aria-label="Pausar a troca de fotos" hidden>
+          <svg class="icone ico-pausa" aria-hidden="true"><use href="assets/icons/icones.svg#i-pausa"></use></svg>
+          <svg class="icone ico-play" aria-hidden="true"><use href="assets/icons/icones.svg#i-play"></use></svg>
+        </button>
+      </div>
     </section>
 
     <section class="secao especialidades" id="especialidades" aria-labelledby="titulo-especialidades">
@@ -73,12 +82,16 @@
       <!-- Carrossel dos profissionais: montado por script.js a partir de dados.js. Fica oculto se não houver profissional. -->
       <div class="carrossel revelar" id="carrossel" role="region" aria-roledescription="carrossel" aria-label="Profissionais" hidden>
         <p class="sobretitulo">Nossos profissionais</p>
-        <ul class="carrossel__faixa" id="carrossel-faixa" tabindex="0" aria-label="Lista de profissionais"></ul>
+        <ul class="carrossel__faixa" id="carrossel-faixa" tabindex="0" aria-label="Lista de profissionais (use as setas do teclado para trocar)"></ul>
         <div class="carrossel__controles" id="carrossel-controles" hidden>
-          <button class="carrossel__botao carrossel__botao--ant" type="button" aria-controls="carrossel-faixa" aria-label="Foto anterior">
+          <button class="carrossel__botao carrossel__botao--ant" id="carrossel-ant" type="button" aria-controls="carrossel-faixa" aria-label="Profissional anterior">
             <svg class="icone" aria-hidden="true"><use href="assets/icons/icones.svg#i-seta"></use></svg>
           </button>
-          <button class="carrossel__botao" type="button" aria-controls="carrossel-faixa" aria-label="Próxima foto">
+          <button class="carrossel__botao" id="carrossel-pausa" type="button" aria-pressed="false" aria-label="Pausar a troca automática" hidden>
+            <svg class="icone ico-pausa" aria-hidden="true"><use href="assets/icons/icones.svg#i-pausa"></use></svg>
+            <svg class="icone ico-play" aria-hidden="true"><use href="assets/icons/icones.svg#i-play"></use></svg>
+          </button>
+          <button class="carrossel__botao" id="carrossel-prox" type="button" aria-controls="carrossel-faixa" aria-label="Próximo profissional">
             <svg class="icone" aria-hidden="true"><use href="assets/icons/icones.svg#i-seta"></use></svg>
           </button>
         </div>

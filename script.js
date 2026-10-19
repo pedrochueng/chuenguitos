@@ -206,25 +206,96 @@ if (typeof document !== "undefined") {
       )
     );
 
-  // Carrossel: rolagem nativa (scroll-snap) + botões; sem rotação automática
+  const reduzido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Alterna pausa/play num botão com aria-pressed e devolve o estado
+  const ligarPausa = (botao, rotuloPausar, rotuloRetomar, aoMudar) => {
+    botao.hidden = false;
+    botao.addEventListener("click", () => {
+      const pausado = botao.getAttribute("aria-pressed") !== "true";
+      botao.setAttribute("aria-pressed", String(pausado));
+      botao.setAttribute("aria-label", pausado ? rotuloRetomar : rotuloPausar);
+      aoMudar(pausado);
+    });
+  };
+
+  // Carrossel 3D (coverflow): o profissional do centro fica em destaque e os vizinhos giram para os lados
   if (temEquipe) {
-    const controles = document.getElementById("carrossel-controles");
-    const [ant, prox] = controles.querySelectorAll("button");
-    const atualizarSetas = () => {
-      ant.disabled = faixa.scrollLeft < 4;
-      prox.disabled = faixa.scrollLeft + faixa.clientWidth >= faixa.scrollWidth - 4;
-    };
-    const passo = (dir) =>
-      faixa.scrollBy({
-        left: dir * (faixa.firstElementChild.offsetWidth + parseFloat(getComputedStyle(faixa).columnGap)),
-        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    const itens = [...faixa.children];
+    const n = itens.length;
+    const meio = Math.floor(n / 2);
+    let atual = 0;
+    const posicionar = () =>
+      itens.forEach((li, i) => {
+        const d = ((i - atual + n + meio) % n) - meio; // -2..2 com 5 itens
+        li.style.setProperty("--d", d);
+        li.style.setProperty("--abs", Math.abs(d));
+        li.classList.toggle("oculto", Math.abs(d) > 2);
+        if (d === 0) li.setAttribute("aria-current", "true");
+        else li.removeAttribute("aria-current");
       });
-    ant.addEventListener("click", () => passo(-1));
-    prox.addEventListener("click", () => passo(1));
-    faixa.addEventListener("scroll", atualizarSetas, { passive: true });
-    addEventListener("resize", atualizarSetas);
-    controles.hidden = false;
-    atualizarSetas();
+    const ir = (novo) => {
+      atual = (novo + n) % n;
+      posicionar();
+    };
+    itens.forEach((li, i) => li.addEventListener("click", () => ir(i)));
+    posicionar();
+
+    if (n > 1) {
+      document.getElementById("carrossel-ant").addEventListener("click", () => ir(atual - 1));
+      document.getElementById("carrossel-prox").addEventListener("click", () => ir(atual + 1));
+      faixa.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") ir(atual - 1);
+        else if (e.key === "ArrowRight") ir(atual + 1);
+        else return;
+        e.preventDefault();
+      });
+      let x0 = null; // deslizar com o dedo ou o mouse
+      faixa.addEventListener("pointerdown", (e) => (x0 = e.clientX));
+      faixa.addEventListener("pointerup", (e) => {
+        if (x0 !== null && Math.abs(e.clientX - x0) > 40) ir(atual + (e.clientX < x0 ? 1 : -1));
+        x0 = null;
+      });
+      document.getElementById("carrossel-controles").hidden = false;
+
+      // Troca automática: nunca com movimento reduzido; para ao interagir, fora da tela ou com o botão
+      if (!reduzido) {
+        let pausadoPeloBotao = false;
+        let interagindo = false;
+        let visivel = false;
+        const regiao = document.getElementById("carrossel");
+        ligarPausa(
+          document.getElementById("carrossel-pausa"),
+          "Pausar a troca automática",
+          "Retomar a troca automática",
+          (p) => (pausadoPeloBotao = p)
+        );
+        regiao.addEventListener("pointerenter", () => (interagindo = true));
+        regiao.addEventListener("pointerleave", () => (interagindo = false));
+        regiao.addEventListener("focusin", () => (interagindo = true));
+        regiao.addEventListener("focusout", () => (interagindo = false));
+        new IntersectionObserver((es) => (visivel = es[0].isIntersecting)).observe(regiao);
+        setInterval(() => {
+          if (!pausadoPeloBotao && !interagindo && visivel && !document.hidden) ir(atual + 1);
+        }, 4500);
+      }
+    }
+  }
+
+  // Fotos do hero: troca sozinha (fade), com botão de pausa; parada com movimento reduzido
+  const fotos = [...document.querySelectorAll("#hero-fotos img")];
+  if (fotos.length > 1 && !reduzido) {
+    let f = 0;
+    let pausada = false;
+    ligarPausa(document.getElementById("hero-pausa"), "Pausar a troca de fotos", "Retomar a troca de fotos", (p) => (pausada = p));
+    setInterval(() => {
+      if (pausada || document.hidden) return;
+      fotos[f].classList.remove("ativa");
+      fotos[f].setAttribute("aria-hidden", "true");
+      f = (f + 1) % fotos.length;
+      fotos[f].classList.add("ativa");
+      fotos[f].removeAttribute("aria-hidden");
+    }, 5000);
   }
 
   // Menu mobile
