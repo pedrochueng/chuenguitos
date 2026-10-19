@@ -9,7 +9,6 @@ function linkWhatsApp(numero, mensagem) {
   return `https://wa.me/${digitos}?text=${encodeURIComponent(mensagem || "")}`;
 }
 
-// Fora do modo de apresentação, só especialidades ativas e só profissionais reais.
 // Rejeita vírgula e ponto e vírgula: impedem que um "e-mail" vire vários destinatários.
 const EMAIL_VALIDO = /^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$/;
 
@@ -20,6 +19,7 @@ function montarMailto(email, nome, mensagem) {
   return `mailto:${email}?subject=${encodeURIComponent("Contato pelo site")}&body=${encodeURIComponent(corpo)}`;
 }
 
+// Fora do modo de apresentação, só especialidades ativas e só profissionais reais.
 function especialidadesVisiveis(lista, modoApresentacao) {
   return (lista || []).filter(
     (e) => e.ativa === true || (modoApresentacao === true && Boolean(e.profissionalExemplo))
@@ -140,7 +140,7 @@ if (typeof document !== "undefined") {
       e.preventDefault();
       if (!form.reportValidity()) return;
       const href = montarMailto(emailUsado, form.nome.value.trim(), form.mensagem.value.trim());
-      aviso.textContent = `Abrindo seu aplicativo de e-mail. Se nada abrir, escreva para ${emailUsado}.`;
+      aviso.textContent = `Abrindo seu aplicativo de e-mail… Se nada abrir, escreva para ${emailUsado}.`;
       if (href) location.href = href;
     });
   }
@@ -205,7 +205,7 @@ if (typeof document !== "undefined") {
   };
   const passo = (dir) =>
     faixa.scrollBy({
-      left: dir * (faixa.firstElementChild.offsetWidth + 16),
+      left: dir * (faixa.firstElementChild.offsetWidth + parseFloat(getComputedStyle(faixa).columnGap)),
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
     });
   ant.addEventListener("click", () => passo(-1));
