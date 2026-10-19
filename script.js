@@ -72,49 +72,16 @@ if (typeof document !== "undefined") {
     document.body.prepend(faixa);
   }
 
-  // Especialidades
-  const lista = document.getElementById("lista-especialidades");
+  // Especialidades e profissionais num carrossel só: cada cartão é uma especialidade,
+  // com o profissional quando houver (sem profissional, o cartão mostra o nome da especialidade)
   const visiveis = especialidadesVisiveis(CLINICA.especialidades, demo);
-  lista.classList.toggle("especialidades__lista--unica", visiveis.length === 1);
-  visiveis.forEach((esp, i) => {
-    const item = el("li", "especialidade revelar");
-    item.id = `esp-${esp.id}`;
-    item.append(el("span", "especialidade__numero", String(i + 1).padStart(2, "0")));
-
-    const corpo = el("div", "especialidade__corpo");
-    const nome = el("h3", "especialidade__nome", esp.nome);
-    if (!esp.ativa) nome.append(seloExemplo());
-    corpo.append(nome);
-    if (esp.descricao) corpo.append(el("p", "especialidade__descricao", esp.descricao));
-    const p = profissionalDe(esp, demo);
-    if (p) {
-      const prof = el("p", "especialidade__profissional", p.nome);
-      if (p.registro) prof.append(el("span", "", ` · ${p.registro}`));
-      corpo.append(prof);
-    }
-    item.append(corpo);
-
-    const nomeMinusculo = esp.nome.toLowerCase();
-    item.append(
-      botaoWhatsApp(
-        esp.whatsapp || CLINICA.whatsappGeral,
-        esp.mensagem,
-        `Agendar ${nomeMinusculo}`,
-        `Agendar ${nomeMinusculo} pelo WhatsApp`
-      )
-    );
-    lista.append(item);
-  });
-
-  // Carrossel de profissionais: só aparece se houver ao menos um
   const faixa = document.getElementById("carrossel-faixa");
-  const equipe = []; // dados de cada cartão, usados na legenda sob o carrossel
+  const equipe = []; // dados de cada cartão, usados na legenda e nas abas
   visiveis.forEach((esp) => {
     const p = profissionalDe(esp, demo);
-    if (!p) return;
     const card = el("li", "pessoa");
     const foto = el("figure", "pessoa__foto");
-    if (p.foto) {
+    if (p && p.foto) {
       const img = el("img");
       img.src = p.foto;
       img.alt = `${p.exemplo ? "Foto ilustrativa de" : "Foto de"} ${p.nome}`;
@@ -123,25 +90,33 @@ if (typeof document !== "undefined") {
       img.loading = "lazy";
       foto.append(img);
     } else {
-      const palavras = p.nome.trim().split(/\s+/);
+      const palavras = (p ? p.nome : esp.nome).trim().split(/\s+/);
       const iniciais = palavras[0][0] + (palavras.length > 1 ? palavras.at(-1)[0] : "");
-      const marca = el("span", "pessoa__iniciais", iniciais.toUpperCase());
+      const marca = el("span", "pessoa__iniciais", iniciais.toUpperCase()); // sem profissional: inicial da especialidade
       marca.setAttribute("aria-hidden", "true");
       foto.append(marca);
     }
     card.append(foto);
     faixa.append(card);
+
+    const minusculo = esp.nome.toLowerCase();
     equipe.push({
-      nome: p.nome,
-      exemplo: p.exemplo,
-      area: esp.nome,
-      registro: p.registro,
-      bio: p.bio,
-      whatsapp: p.whatsapp || esp.whatsapp || CLINICA.whatsappGeral, // número do profissional, da especialidade ou da clínica
+      aba: esp.nome,
+      titulo: p ? p.nome : esp.nome,
+      area: p ? esp.nome : "",
+      exemplo: p ? p.exemplo : !esp.ativa,
+      registro: p ? p.registro : "",
+      descricao: esp.descricao,
+      bio: p ? p.bio : "",
+      whatsapp: (p && p.whatsapp) || esp.whatsapp || CLINICA.whatsappGeral, // do profissional, da especialidade ou da clínica
+      mensagem: p
+        ? `Olá! Gostaria de obter informações sobre agendamento com ${p.nome} (${minusculo}) na clínica.`
+        : esp.mensagem,
+      rotulo: p ? `Agendar com ${p.nome}` : `Agendar ${minusculo}`,
+      rotuloAcessivel: p ? `Agendar com ${p.nome} pelo WhatsApp` : `Agendar ${minusculo} pelo WhatsApp`,
     });
   });
-  const temEquipe = faixa.children.length > 0;
-  document.getElementById("carrossel").hidden = !temEquipe;
+  const temEquipe = faixa.children.length > 0;  document.getElementById("carrossel").hidden = !temEquipe;
 
   // E-mail: a seção só aparece se houver endereço (real, ou de exemplo no modo de apresentação)
   const emailReal = CLINICA.email || "";
@@ -229,6 +204,7 @@ if (typeof document !== "undefined") {
   if (temEquipe) {
     const quadro = document.getElementById("carrossel-quadro");
     const legenda = document.getElementById("carrossel-legenda");
+    const abas = document.getElementById("abas");
     const cartoes = [...faixa.children];
     const n = cartoes.length;
     const circular = n > 2; // com 1 ou 2 itens não há anel para girar
@@ -245,24 +221,20 @@ if (typeof document !== "undefined") {
 
     const mostrarLegenda = (i) => {
       const d = equipe[i];
-      const nome = el("h3", "pessoa__nome", d.nome);
+      const nome = el("h3", "pessoa__nome", d.titulo);
       if (d.exemplo) nome.append(seloExemplo());
-      legenda.replaceChildren(nome, el("p", "pessoa__area", d.area));
+      legenda.replaceChildren(nome);
+      if (d.area) legenda.append(el("p", "pessoa__area", d.area));
       if (d.registro) legenda.append(el("p", "pessoa__registro", d.registro));
+      if (d.descricao) legenda.append(el("p", "pessoa__descricao", d.descricao));
       if (d.bio) legenda.append(el("p", "pessoa__bio", d.bio));
-      legenda.append(
-        botaoWhatsApp(
-          d.whatsapp,
-          `Olá! Gostaria de obter informações sobre agendamento com ${d.nome} (${d.area.toLowerCase()}) na clínica.`,
-          `Agendar com ${d.nome}`,
-          `Agendar com ${d.nome} pelo WhatsApp`
-        )
-      );
+      legenda.append(botaoWhatsApp(d.whatsapp, d.mensagem, d.rotulo, d.rotuloAcessivel));
     };
     const selecionar = (i) => {
       if (i === selecionado) return;
       selecionado = i;
       cartoes.forEach((c, k) => (k === i ? c.setAttribute("aria-current", "true") : c.removeAttribute("aria-current")));
+      [...abas.children].forEach((b, k) => (k === i ? b.setAttribute("aria-current", "true") : b.removeAttribute("aria-current")));
       mostrarLegenda(i);
     };
 
@@ -376,6 +348,16 @@ if (typeof document !== "undefined") {
       c.setAttribute("aria-roledescription", "slide");
       c.setAttribute("aria-label", `${i + 1} de ${n}`);
     });
+    if (n > 1) {
+      // Abas: um nome por especialidade; tocar leva o carrossel até ela
+      equipe.forEach((d, i) => {
+        const aba = el("button", "aba", d.aba);
+        aba.type = "button";
+        aba.addEventListener("click", () => irPara(i));
+        abas.append(aba);
+      });
+      abas.hidden = false;
+    }
     largura = cartoes[0].offsetWidth;
     selecionar(0);
     pintar();

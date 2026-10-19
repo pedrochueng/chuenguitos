@@ -79,16 +79,14 @@
         <p class="sobretitulo">Especialidades</p>
         <h2 id="titulo-especialidades">Encontre o cuidado que você procura</h2>
       </div>
-      <!-- Carrossel dos profissionais: montado por script.js a partir de dados.js. Fica oculto se não houver profissional. -->
-      <div class="carrossel revelar" id="carrossel" role="region" aria-roledescription="carrossel" aria-label="Profissionais" hidden>
-        <p class="sobretitulo">Nossos profissionais</p>
-        <div class="carrossel__quadro" id="carrossel-quadro" tabindex="0" aria-label="Profissionais: arraste ou use as setas do teclado para trocar">
+      <!-- Bloco único: cada cartão é uma especialidade (com o profissional, quando houver). Montado por script.js a partir de dados.js. -->
+      <div class="carrossel revelar" id="carrossel" role="region" aria-roledescription="carrossel" aria-label="Especialidades e profissionais" hidden>
+        <div class="abas" id="abas" role="group" aria-label="Escolher especialidade" hidden></div>
+        <div class="carrossel__quadro" id="carrossel-quadro" tabindex="0" aria-label="Especialidades: arraste ou use as setas do teclado para trocar">
           <ul class="carrossel__faixa" id="carrossel-faixa"></ul>
         </div>
         <div class="carrossel__legenda" id="carrossel-legenda" aria-live="polite"></div>
-      </div>
-      <ul class="especialidades__lista" id="lista-especialidades"></ul>
-      <noscript><p class="aviso">Para ver as especialidades e agendar, ative o JavaScript ou consulte a seção de contato.</p></noscript>
+      </div>      <noscript><p class="aviso">Para ver as especialidades e agendar, ative o JavaScript ou consulte a seção de contato.</p></noscript>
       <p class="nota revelar">O contato pelo WhatsApp inicia uma solicitação de agendamento. O horário é confirmado pela clínica.</p>
     </section>
 

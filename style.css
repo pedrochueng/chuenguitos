@@ -244,17 +244,19 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .carrossel__legenda > * { animation: surgir .45s ease both; }
 .pessoa__bio { max-width: 28rem; margin-inline: auto; }
 .carrossel__legenda .botao { margin-top: 1.25rem; }
-.especialidades__lista { border-top: 1px solid var(--linha); }
-.especialidade {
-  display: grid; gap: 1rem 2rem;
-  padding: 2rem 0; border-bottom: 1px solid var(--linha);
+.pessoa__descricao { max-width: 30rem; margin: 0 auto 1rem; }
+.pessoa__bio { font-size: var(--t-pequeno); }
+
+/* Abas de especialidade: levam o carrossel até o cartão */
+.abas { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-bottom: .5rem; }
+.aba {
+  min-height: 2.75rem; padding: .5rem 1.1rem; cursor: pointer; touch-action: manipulation;
+  font: 500 1rem/1.2 var(--fonte-texto); color: var(--terracota-escuro);
+  background: transparent; border: 1px solid var(--caramelo); border-radius: 999px;
+  transition: background-color .25s ease, color .25s ease;
 }
-.especialidade__numero { font-family: var(--fonte-titulo); font-style: italic; color: var(--caramelo); font-size: var(--t-destaque); }
-.especialidade__nome { font-size: 2rem; margin-bottom: .75rem; }
-.especialidade__descricao { color: var(--texto-suave); max-width: 36rem; }
-.especialidade__profissional { font-weight: 500; margin: 0; }
-.especialidade .botao { justify-self: start; }
-.especialidades__lista--unica .especialidade { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.aba:hover { background: var(--creme); }
+.aba[aria-current="true"] { background: var(--terracota-escuro); border-color: var(--terracota-escuro); color: var(--branco); }
 
 /* Modo de apresentação */
 .faixa-apresentacao {
@@ -377,8 +379,6 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   .fases__lista, .passos__lista { grid-template-columns: repeat(3, 1fr); }
   .passos__lista li { flex-direction: column; gap: 1rem; }
   .passos__num { transform: none; }
-  .especialidade { grid-template-columns: 3rem 1fr; }
-  .especialidade .botao { grid-column: 2; }
 }
 @media (min-width: 900px) {
   .botao-menu { display: none; }
@@ -388,9 +388,6 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   .hero { grid-template-columns: 1.1fr .9fr; }
   .hero__visual { justify-self: end; }
   .clinica { grid-template-columns: .9fr 1.1fr; }
-  .especialidade { grid-template-columns: 4rem 1fr auto; align-items: center; }
-  .especialidade .botao { grid-column: auto; }
-  .especialidade__numero { align-self: start; padding-top: .9rem; }
   .contato { grid-template-columns: 1fr 1fr; align-items: start; }
   .rodape__interno { grid-template-columns: auto 1fr; align-items: center; }
   .rodape nav { justify-self: end; }
