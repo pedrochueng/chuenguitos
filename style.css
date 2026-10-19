@@ -211,10 +211,7 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
 }
 .carrossel__faixa::-webkit-scrollbar { display: none; }
-.carrossel__faixa li { flex: 0 0 min(82%, 26rem); scroll-snap-align: start; }
-.carrossel figure { position: relative; }
-.carrossel img { width: 100%; aspect-ratio: 10 / 7; object-fit: cover; border-radius: .5rem; background: var(--creme); }
-.carrossel figcaption { margin-top: .75rem; font-family: var(--fonte-titulo); font-style: italic; font-size: 1.1rem; color: var(--texto-suave); }
+.carrossel__faixa li { flex: 0 0 min(72%, 17rem); scroll-snap-align: start; }
 .carrossel__controles { display: flex; justify-content: flex-end; gap: .75rem; margin-top: .5rem; }
 .carrossel__botao {
   display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; cursor: pointer;
@@ -225,7 +222,6 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .carrossel__botao:hover:not(:disabled) { background: var(--terracota-escuro); color: var(--branco); border-color: var(--terracota-escuro); }
 .carrossel__botao:disabled { opacity: .35; cursor: default; }
 .carrossel__botao--ant .icone { transform: rotate(180deg); }
-@media (min-width: 900px) { .carrossel__faixa li { flex-basis: 36%; } }
 
 .especialidades__lista { border-top: 1px solid var(--linha); }
 .especialidade {
@@ -250,17 +246,20 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   color: var(--oliva-escuro); border: 1px solid var(--oliva); border-radius: 999px;
 }
 
-/* Equipe */
-.equipe__lista { display: grid; gap: 2.5rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
+/* Profissionais (cartões do carrossel) */
+.pessoa__foto img, .pessoa__iniciais {
+  width: 100%; aspect-ratio: 4 / 5; border-radius: 9999px 9999px .5rem .5rem; /* arco, como no hero */
+}
+.pessoa__foto img { object-fit: cover; background: var(--creme); }
 .pessoa__iniciais {
-  display: grid; place-items: center; width: 4.5rem; height: 4.5rem; margin-bottom: 1.25rem;
-  border-radius: 50% 50% 50% 0; background: var(--creme); color: var(--terracota-escuro);
-  font-family: var(--fonte-titulo); font-size: 1.5rem;
+  display: grid; place-items: center; background: var(--creme); color: var(--terracota-escuro);
+  font-family: var(--fonte-titulo); font-size: 3.5rem;
 }
 .pessoa:nth-child(4n+2) .pessoa__iniciais { background: var(--oliva-claro); color: var(--oliva-escuro); }
 .pessoa:nth-child(4n+3) .pessoa__iniciais { background: var(--areia); }
 .pessoa:nth-child(4n+4) .pessoa__iniciais { background: var(--pessego); }
-.pessoa__nome { font-size: 1.35rem; margin-bottom: .25rem; }
+.pessoa__nome { font-size: 1.35rem; margin: 1rem 0 .25rem; }
+.pessoa__nome .selo-exemplo { display: table; margin: .5rem 0 .25rem; }
 .pessoa__area { margin: 0; font-weight: 500; color: var(--terracota-escuro); }
 .pessoa__registro { margin: 0 0 .75rem; font-size: .85rem; color: var(--texto-suave); }
 .pessoa__bio { margin: 0; color: var(--texto-suave); font-size: .95rem; }

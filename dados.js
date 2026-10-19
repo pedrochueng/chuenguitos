@@ -32,6 +32,8 @@ const CLINICA = {
    * profissional: dados REAIS e confirmados (aparecem sempre que preenchidos).
    * profissionalExemplo: dados FICTÍCIOS, só aparecem com modoApresentacao: true.
    * Registros de exemplo usam zeros de propósito, para não coincidir com profissionais reais.
+   * foto: caminho da foto (ex.: "assets/images/equipe/nome.webp", 4:5, WebP). Sem foto, aparecem as iniciais.
+   *   As fotos de exemplo são de pessoas reais de um banco de imagens e NÃO representam a equipe.
    */
   especialidades: [
     {
@@ -40,10 +42,11 @@ const CLINICA = {
       ativa: true,
       descricao:
         "Atendimento psicológico com escuta cuidadosa, para compreender o que você está vivendo e construir caminhos possíveis no seu tempo.",
-      // PENDENTE: nome e registro (CRP) confirmados pela psicóloga
-      profissional: { nome: "", registro: "", bio: "" },
+      // PENDENTE: nome, registro (CRP) e foto autorizada, confirmados pela psicóloga
+      profissional: { nome: "", registro: "", bio: "", foto: "" },
       profissionalExemplo: {
         nome: "Nome da Psicóloga",
+        foto: "assets/images/equipe/psicologia.webp",
         registro: "CRP 00/00000",
         bio: "Psicóloga clínica e fundadora da clínica. Atende adolescentes e adultos.",
       },
@@ -60,6 +63,7 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Camila Duarte",
+        foto: "assets/images/equipe/fonoaudiologia.webp",
         registro: "CRFa 0-00000",
         bio: "Fonoaudióloga com atuação em linguagem infantil e desenvolvimento da fala.",
       },
@@ -75,6 +79,7 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Rafael Moreira",
+        foto: "assets/images/equipe/psiquiatria.webp",
         registro: "CRM 00000 · RQE 00000",
         bio: "Médico psiquiatra, com atenção ao cuidado integrado entre especialidades.",
       },
@@ -90,6 +95,7 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Juliana Prates",
+        foto: "assets/images/equipe/terapias.webp",
         registro: "CREFITO 0-00000-TO",
         bio: "Terapeuta ocupacional com foco em desenvolvimento e integração sensorial.",
       },
@@ -105,6 +111,7 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Beatriz Lima",
+        foto: "assets/images/equipe/infantil.webp",
         registro: "CRP 00/00000",
         bio: "Psicóloga com atuação em infância e orientação parental.",
       },

@@ -106,26 +106,37 @@ if (typeof document !== "undefined") {
     lista.append(item);
   });
 
-  // Equipe: aparece só se houver ao menos um profissional
-  const equipe = document.getElementById("lista-equipe");
+  // Carrossel de profissionais: só aparece se houver ao menos um
+  const faixa = document.getElementById("carrossel-faixa");
   visiveis.forEach((esp) => {
     const p = profissionalDe(esp, demo);
     if (!p) return;
-    const card = el("li", "pessoa revelar");
-    const palavras = p.nome.trim().split(/\s+/);
-    const iniciais = el("span", "pessoa__iniciais", (palavras[0][0] + (palavras.length > 1 ? palavras.at(-1)[0] : "")).toUpperCase());
-    iniciais.setAttribute("aria-hidden", "true");
+    const card = el("li", "pessoa");
+    const foto = el("figure", "pessoa__foto");
+    if (p.foto) {
+      const img = el("img");
+      img.src = p.foto;
+      img.alt = `${p.exemplo ? "Foto ilustrativa de" : "Foto de"} ${p.nome}`;
+      img.width = 640;
+      img.height = 800;
+      img.loading = "lazy";
+      foto.append(img);
+    } else {
+      const palavras = p.nome.trim().split(/\s+/);
+      const iniciais = palavras[0][0] + (palavras.length > 1 ? palavras.at(-1)[0] : "");
+      const marca = el("span", "pessoa__iniciais", iniciais.toUpperCase());
+      marca.setAttribute("aria-hidden", "true");
+      foto.append(marca);
+    }
     const nome = el("h3", "pessoa__nome", p.nome);
     if (p.exemplo) nome.append(seloExemplo());
-    card.append(iniciais, nome, el("p", "pessoa__area", esp.nome));
+    card.append(foto, nome, el("p", "pessoa__area", esp.nome));
     if (p.registro) card.append(el("p", "pessoa__registro", p.registro));
     if (p.bio) card.append(el("p", "pessoa__bio", p.bio));
-    equipe.append(card);
+    faixa.append(card);
   });
-  if (equipe.children.length) {
-    document.getElementById("equipe").hidden = false;
-    document.querySelectorAll("[data-link-equipe]").forEach((n) => (n.hidden = false));
-  }
+  const temEquipe = faixa.children.length > 0;
+  document.getElementById("carrossel").hidden = !temEquipe;
 
   // E-mail: a seção só aparece se houver endereço (real, ou de exemplo no modo de apresentação)
   const emailReal = CLINICA.email || "";
@@ -196,24 +207,25 @@ if (typeof document !== "undefined") {
     );
 
   // Carrossel: rolagem nativa (scroll-snap) + botões; sem rotação automática
-  const faixa = document.getElementById("carrossel-faixa");
-  const controles = document.getElementById("carrossel-controles");
-  const [ant, prox] = controles.querySelectorAll("button");
-  const atualizarSetas = () => {
-    ant.disabled = faixa.scrollLeft < 4;
-    prox.disabled = faixa.scrollLeft + faixa.clientWidth >= faixa.scrollWidth - 4;
-  };
-  const passo = (dir) =>
-    faixa.scrollBy({
-      left: dir * (faixa.firstElementChild.offsetWidth + parseFloat(getComputedStyle(faixa).columnGap)),
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-    });
-  ant.addEventListener("click", () => passo(-1));
-  prox.addEventListener("click", () => passo(1));
-  faixa.addEventListener("scroll", atualizarSetas, { passive: true });
-  addEventListener("resize", atualizarSetas);
-  controles.hidden = false;
-  atualizarSetas();
+  if (temEquipe) {
+    const controles = document.getElementById("carrossel-controles");
+    const [ant, prox] = controles.querySelectorAll("button");
+    const atualizarSetas = () => {
+      ant.disabled = faixa.scrollLeft < 4;
+      prox.disabled = faixa.scrollLeft + faixa.clientWidth >= faixa.scrollWidth - 4;
+    };
+    const passo = (dir) =>
+      faixa.scrollBy({
+        left: dir * (faixa.firstElementChild.offsetWidth + parseFloat(getComputedStyle(faixa).columnGap)),
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      });
+    ant.addEventListener("click", () => passo(-1));
+    prox.addEventListener("click", () => passo(1));
+    faixa.addEventListener("scroll", atualizarSetas, { passive: true });
+    addEventListener("resize", atualizarSetas);
+    controles.hidden = false;
+    atualizarSetas();
+  }
 
   // Menu mobile
   const botaoMenu = document.getElementById("botao-menu");
