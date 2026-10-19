@@ -16,6 +16,10 @@ const CLINICA = {
   // PENDENTE: número oficial da clínica (usado quando a especialidade não tem número próprio)
   whatsappGeral: "",
 
+  // PENDENTE: e-mail oficial. Vazio = a seção "E-mail" não aparece (exceto no modo de apresentação).
+  email: "",
+  emailExemplo: "contato@example.com", // fictício, só no modo de apresentação
+
   contato: {
     endereco: "",      // PENDENTE. Ex.: "Rua ..., 123 — Sala 4"
     cidade: "",        // PENDENTE. Ex.: "Cidade — UF"

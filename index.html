@@ -131,34 +131,26 @@
       </ol>
     </section>
 
-    <!-- PENDENTE: cliente deve aprovar as respostas. Não acrescentar valores, convênios ou modalidades sem confirmação. -->
-    <section class="secao faq" id="perguntas" aria-labelledby="titulo-faq">
+    <!-- O formulário não envia nada pelo site: monta um mailto: e abre o e-mail da pessoa. A seção só aparece se houver e-mail em dados.js. -->
+    <section class="secao email" id="email" aria-labelledby="titulo-email" hidden>
       <div class="secao__cabeca revelar">
-        <p class="sobretitulo">Perguntas frequentes</p>
-        <h2 id="titulo-faq">Antes de entrar em contato</h2>
+        <p class="sobretitulo">E-mail</p>
+        <h2 id="titulo-email">Prefere escrever por e-mail?</h2>
+        <p>Preencha abaixo. Seu aplicativo de e-mail abrirá com a mensagem pronta, e você revisa e envia.</p>
       </div>
-      <div class="faq__lista revelar">
-        <details>
-          <summary>Como faço para agendar?</summary>
-          <p>Escolha a especialidade e clique no botão de agendamento. Você será levado ao WhatsApp com uma mensagem pronta, que pode editar antes de enviar.</p>
-        </details>
-        <details>
-          <summary>O horário já fica confirmado ao enviar a mensagem?</summary>
-          <p>Não. A mensagem inicia uma solicitação de agendamento. A clínica responde verificando a disponibilidade e confirma o horário com você.</p>
-        </details>
-        <details>
-          <summary>Valores, convênios e atendimento online?</summary>
-          <p>Essas informações são passadas pela clínica na conversa inicial, de acordo com cada especialidade.</p>
-        </details>
-        <details>
-          <summary>Posso contar minha situação pelo WhatsApp antes do atendimento?</summary>
-          <p>Recomendamos não enviar detalhes de saúde por mensagem. Use a conversa para tratar de horários e orientações; o restante fica para o atendimento, com sigilo profissional.</p>
-        </details>
-        <details>
-          <summary>E se eu precisar de ajuda com urgência?</summary>
-          <p>Este site não é um serviço de emergência. Em risco imediato, ligue 192 (SAMU) ou procure o pronto-socorro mais próximo. O CVV atende 24 horas, gratuitamente, pelo 188.</p>
-        </details>
-      </div>
+      <form class="email__form revelar" id="form-email" hidden>
+        <p class="campo">
+          <label for="email-nome">Seu nome</label>
+          <input id="email-nome" name="nome" type="text" autocomplete="name" maxlength="80" required>
+        </p>
+        <p class="campo">
+          <label for="email-mensagem">Mensagem</label>
+          <textarea id="email-mensagem" name="mensagem" rows="5" maxlength="1000" required aria-describedby="email-cuidado"></textarea>
+        </p>
+        <p class="nota" id="email-cuidado">Não escreva informações de saúde, diagnósticos ou dados de crianças. Use este espaço apenas para pedir informações ou solicitar um horário.</p>
+        <button class="botao" type="submit">Abrir meu e-mail</button>
+        <p class="email__aviso" id="email-aviso" role="status"></p>
+      </form>
     </section>
 
     <section class="secao contato" id="contato" aria-labelledby="titulo-contato">
@@ -182,7 +174,6 @@
           <li><a href="#especialidades">Especialidades</a></li>
           <li data-link-equipe hidden><a href="#equipe">Equipe</a></li>
           <li><a href="#clinica">A clínica</a></li>
-          <li><a href="#perguntas">Perguntas</a></li>
           <li><a href="#contato">Contato</a></li>
           <li><a href="privacy.html">Política de privacidade</a></li>
         </ul>

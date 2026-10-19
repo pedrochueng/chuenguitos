@@ -9,6 +9,7 @@ const linkWhatsApp = vm.runInContext("linkWhatsApp", ctx);
 const especialidadesVisiveis = vm.runInContext("especialidadesVisiveis", ctx);
 const profissionalDe = vm.runInContext("profissionalDe", ctx);
 const CLINICA = vm.runInContext("CLINICA", ctx);
+const montarMailto = vm.runInContext("montarMailto", ctx);
 
 const msg = "Olá! Gostaria de obter informações sobre agendamento para psicologia na clínica.";
 assert.equal(
@@ -34,5 +35,15 @@ for (const esp of CLINICA.especialidades) {
 }
 assert.equal(profissionalDe(CLINICA.especialidades[0], true).exemplo, true);
 assert.equal(profissionalDe({ profissional: { nome: "Real" }, profissionalExemplo: { nome: "X" } }, true).nome, "Real", "real tem prioridade");
+
+// mailto: codificação, quebras de linha e destinatário único
+const m = montarMailto("a@b.com", "Ana & Cia", "linha 1\nlinha 2?x=1");
+assert.ok(m.startsWith("mailto:a@b.com?subject=Contato%20pelo%20site&body="));
+assert.ok(m.includes("linha%201%0D%0Alinha%202%3Fx%3D1"), "CRLF e ? codificados");
+assert.ok(m.includes("Ana%20%26%20Cia"), "& do nome codificado");
+assert.equal(montarMailto("", "a", "b"), null);
+assert.equal(montarMailto("sem-arroba", "a", "b"), null);
+assert.equal(montarMailto("a@b.com,outro@x.com", "a", "b"), null, "vários destinatários");
+assert.equal(montarMailto("a@b.com?bcc=x@y.com", "a", "b"), null, "não injeta cabeçalhos");
 
 console.log("ok: todos os testes passaram");

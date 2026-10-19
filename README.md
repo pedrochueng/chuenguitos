@@ -41,6 +41,7 @@ O `_headers` não é aplicado pelo servidor local; ele vale na hospedagem.
 
 - [ ] Nome definitivo da clínica e logotipo
 - [ ] Número oficial de WhatsApp (e de cada profissional, se houver)
+- [ ] E-mail oficial da clínica
 - [ ] Nome da psicóloga e número do CRP (exigido pelo Código de Ética do psicólogo em divulgações)
 - [ ] Endereço, cidade, horários, Instagram e orientações de chegada
 - [ ] Domínio (para canonical, `og:url`, `og:image` e `sitemap.xml`)
@@ -70,7 +71,7 @@ Nenhum site é absolutamente seguro. Mapa embutido, analytics ou formulário fut
 
 - `modoApresentacao: true` em `dados.js` mostra 4 profissionais fictícios (registros zerados), a seção Equipe e uma faixa de aviso. **Antes de publicar, mude para `false`.**
 - As fotos de exemplo vêm do Unsplash (licença livre, inclusive comercial, sem exigir crédito): `hero.webp` de [Archee Lal](https://unsplash.com/photos/warm-light-illuminates-a-bedroom-with-a-bed-and-plant-hkCXcR2mcds) e `clinica.webp` de [Simona Sergi](https://unsplash.com/photos/cozy-living-room-with-natural-elements-and-warm-tones-8fF_tF2ZMSQ). Não são do espaço da clínica: trocar antes de publicar.
-- As respostas das Perguntas frequentes não afirmam valores, convênios nem modalidades. Se a cliente quiser acrescentá-los, só com dados confirmados.
+- **E-mail:** a seção "Prefere escrever por e-mail?" só aparece se `email` estiver preenchido em `dados.js` (no modo de apresentação usa `emailExemplo`). O formulário não envia nada pelo site: monta um `mailto:` e abre o aplicativo de e-mail da pessoa. Se a cliente quiser receber mensagens direto, sem a pessoa abrir o e-mail dela, é preciso um serviço externo (ex.: Formspree ou Web3Forms). Isso exige ajustar a CSP em `_headers` e a política de privacidade, e o site passa a tratar os dados enviados.
 
 ## Decisões
 

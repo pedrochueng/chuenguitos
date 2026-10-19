@@ -10,6 +10,16 @@ function linkWhatsApp(numero, mensagem) {
 }
 
 // Fora do modo de apresentação, só especialidades ativas e só profissionais reais.
+// Rejeita vírgula e ponto e vírgula: impedem que um "e-mail" vire vários destinatários.
+const EMAIL_VALIDO = /^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$/;
+
+// Monta o mailto: da mensagem, ou null se o e-mail for inválido. Quebras de linha viram CRLF.
+function montarMailto(email, nome, mensagem) {
+  if (!EMAIL_VALIDO.test(String(email || ""))) return null;
+  const corpo = `Olá! Meu nome é ${nome}.\n\n${mensagem}`.replace(/\r?\n/g, "\r\n");
+  return `mailto:${email}?subject=${encodeURIComponent("Contato pelo site")}&body=${encodeURIComponent(corpo)}`;
+}
+
 function especialidadesVisiveis(lista, modoApresentacao) {
   return (lista || []).filter(
     (e) => e.ativa === true || (modoApresentacao === true && Boolean(e.profissionalExemplo))
@@ -117,6 +127,24 @@ if (typeof document !== "undefined") {
     document.querySelectorAll("[data-link-equipe]").forEach((n) => (n.hidden = false));
   }
 
+  // E-mail: a seção só aparece se houver endereço (real, ou de exemplo no modo de apresentação)
+  const emailReal = CLINICA.email || "";
+  const emailUsado = emailReal || (demo ? CLINICA.emailExemplo || "" : "");
+  if (EMAIL_VALIDO.test(emailUsado)) {
+    document.getElementById("email").hidden = false;
+    const form = document.getElementById("form-email");
+    form.hidden = false;
+    if (!emailReal) document.getElementById("titulo-email").append(seloExemplo());
+    const aviso = document.getElementById("email-aviso");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const href = montarMailto(emailUsado, form.nome.value.trim(), form.mensagem.value.trim());
+      aviso.textContent = `Abrindo seu aplicativo de e-mail. Se nada abrir, escreva para ${emailUsado}.`;
+      if (href) location.href = href;
+    });
+  }
+
   // Contato: mostra apenas campos preenchidos
   const c = CLINICA.contato || {};
   const dl = document.getElementById("dados-contato");
@@ -140,6 +168,11 @@ if (typeof document !== "undefined") {
     linha("Endereço", "i-local", bloco);
   }
   if (c.horarios) linha("Horários", "i-relogio", c.horarios);
+  if (EMAIL_VALIDO.test(emailReal)) {
+    const a = el("a", "", emailReal);
+    a.href = `mailto:${emailReal}`;
+    linha("E-mail", "i-email", a);
+  }
   const usuarioInsta = String(c.instagram || "").replace(/[^\w.]/g, "");
   if (usuarioInsta) {
     const a = el("a", "", `@${usuarioInsta}`);
