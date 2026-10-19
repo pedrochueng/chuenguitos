@@ -6,9 +6,13 @@
  * - Campo vazio ("") não aparece no site.
  * - WhatsApp: só dígitos, com 55 + DDD + número. Ex.: "5511912345678".
  *   Número vazio ou inválido = botão aparece como "Agendamento em breve" (sem link).
- * - Especialidade com ativa: false não é exibida.
+ * - Especialidade com ativa: false não é exibida (exceto no modo de apresentação).
  */
 const CLINICA = {
+  // true = mostra os "profissionalExemplo" (fictícios) e uma faixa de aviso no topo.
+  // ATENÇÃO: mude para false antes de publicar. Dados de exemplo nunca vão ao ar.
+  modoApresentacao: true,
+
   // PENDENTE: número oficial da clínica (usado quando a especialidade não tem número próprio)
   whatsappGeral: "",
 
@@ -20,6 +24,11 @@ const CLINICA = {
     orientacoes: "",   // PENDENTE (opcional). Ex.: "Estacionamento na rua lateral"
   },
 
+  /*
+   * profissional: dados REAIS e confirmados (aparecem sempre que preenchidos).
+   * profissionalExemplo: dados FICTÍCIOS, só aparecem com modoApresentacao: true.
+   * Registros de exemplo usam zeros de propósito, para não coincidir com profissionais reais.
+   */
   especialidades: [
     {
       id: "psicologia",
@@ -28,7 +37,12 @@ const CLINICA = {
       descricao:
         "Atendimento psicológico com escuta cuidadosa, para compreender o que você está vivendo e construir caminhos possíveis no seu tempo.",
       // PENDENTE: nome e registro (CRP) confirmados pela psicóloga
-      profissional: { nome: "", registro: "" },
+      profissional: { nome: "", registro: "", bio: "" },
+      profissionalExemplo: {
+        nome: "Nome da Psicóloga",
+        registro: "CRP 00/00000",
+        bio: "Psicóloga clínica e fundadora da clínica. Atende adolescentes e adultos.",
+      },
       whatsapp: "", // vazio = usa whatsappGeral
       mensagem: "Olá! Gostaria de obter informações sobre agendamento para psicologia na clínica.",
     },
@@ -37,8 +51,14 @@ const CLINICA = {
       id: "fonoaudiologia",
       nome: "Fonoaudiologia",
       ativa: false,
-      descricao: "",
-      profissional: { nome: "", registro: "" },
+      descricao:
+        "Avaliação e acompanhamento da comunicação: fala, linguagem, voz, audição e deglutição, em crianças e adultos.",
+      profissional: { nome: "", registro: "", bio: "" },
+      profissionalExemplo: {
+        nome: "Camila Duarte",
+        registro: "CRFa 0-00000",
+        bio: "Fonoaudióloga com atuação em linguagem infantil e desenvolvimento da fala.",
+      },
       whatsapp: "",
       mensagem: "Olá! Gostaria de obter informações sobre agendamento para fonoaudiologia na clínica.",
     },
@@ -46,26 +66,44 @@ const CLINICA = {
       id: "psiquiatria",
       nome: "Psiquiatria",
       ativa: false,
-      descricao: "",
-      profissional: { nome: "", registro: "" },
+      descricao:
+        "Avaliação médica da saúde mental e acompanhamento do tratamento, em diálogo com os demais profissionais.",
+      profissional: { nome: "", registro: "", bio: "" },
+      profissionalExemplo: {
+        nome: "Rafael Moreira",
+        registro: "CRM 00000 · RQE 00000",
+        bio: "Médico psiquiatra, com atenção ao cuidado integrado entre especialidades.",
+      },
       whatsapp: "",
       mensagem: "Olá! Gostaria de obter informações sobre agendamento para psiquiatria na clínica.",
     },
     {
       id: "terapias",
-      nome: "Terapias",
+      nome: "Terapia ocupacional",
       ativa: false,
-      descricao: "",
-      profissional: { nome: "", registro: "" },
+      descricao:
+        "Apoio à autonomia nas atividades do dia a dia, da rotina escolar à vida adulta.",
+      profissional: { nome: "", registro: "", bio: "" },
+      profissionalExemplo: {
+        nome: "Juliana Prates",
+        registro: "CREFITO 0-00000-TO",
+        bio: "Terapeuta ocupacional com foco em desenvolvimento e integração sensorial.",
+      },
       whatsapp: "",
-      mensagem: "Olá! Gostaria de obter informações sobre agendamento de terapia na clínica.",
+      mensagem: "Olá! Gostaria de obter informações sobre agendamento de terapia ocupacional na clínica.",
     },
     {
       id: "infantil",
       nome: "Atendimento infantil",
       ativa: false,
-      descricao: "",
-      profissional: { nome: "", registro: "" },
+      descricao:
+        "Escuta da criança por meio do brincar, com orientação próxima aos pais e responsáveis.",
+      profissional: { nome: "", registro: "", bio: "" },
+      profissionalExemplo: {
+        nome: "Beatriz Lima",
+        registro: "CRP 00/00000",
+        bio: "Psicóloga com atuação em infância e orientação parental.",
+      },
       whatsapp: "",
       mensagem: "Olá! Gostaria de obter informações sobre agendamento de atendimento infantil na clínica.",
     },

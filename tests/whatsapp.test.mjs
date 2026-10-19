@@ -6,7 +6,8 @@ import assert from "node:assert/strict";
 const ctx = vm.createContext({});
 for (const f of ["dados.js", "script.js"]) vm.runInContext(readFileSync(new URL(`../${f}`, import.meta.url), "utf8"), ctx);
 const linkWhatsApp = vm.runInContext("linkWhatsApp", ctx);
-const especialidadesAtivas = vm.runInContext("especialidadesAtivas", ctx);
+const especialidadesVisiveis = vm.runInContext("especialidadesVisiveis", ctx);
+const profissionalDe = vm.runInContext("profissionalDe", ctx);
 const CLINICA = vm.runInContext("CLINICA", ctx);
 
 const msg = "Olá! Gostaria de obter informações sobre agendamento para psicologia na clínica.";
@@ -21,8 +22,17 @@ assert.equal(linkWhatsApp("55119", msg), null, "curto demais");
 assert.equal(linkWhatsApp(undefined, msg), null);
 
 // Array.from: arrays criados no vm têm outro protótipo e falham no deepStrictEqual
-const ativas = Array.from(especialidadesAtivas(CLINICA.especialidades), (e) => e.id);
-assert.deepEqual(ativas, ["psicologia"], "só psicologia ativa");
-assert.equal(especialidadesAtivas([{ ativa: "true" }, { ativa: 1 }]).length, 0, "só ativa === true");
+const ids = (modo) => Array.from(especialidadesVisiveis(CLINICA.especialidades, modo), (e) => e.id);
+assert.deepEqual(ids(false), ["psicologia"], "publicado: só psicologia ativa");
+assert.equal(ids(true).length, 5, "apresentação: mostra os exemplos");
+assert.equal(especialidadesVisiveis([{ ativa: "true" }, { ativa: 1 }], false).length, 0, "só ativa === true");
+
+// Sem modo de apresentação, nenhum profissional fictício aparece
+for (const esp of CLINICA.especialidades) {
+  const p = profissionalDe(esp, false);
+  assert.ok(p === null || p.exemplo === false, `${esp.id}: exemplo vazou com modo desligado`);
+}
+assert.equal(profissionalDe(CLINICA.especialidades[0], true).exemplo, true);
+assert.equal(profissionalDe({ profissional: { nome: "Real" }, profissionalExemplo: { nome: "X" } }, true).nome, "Real", "real tem prioridade");
 
 console.log("ok: todos os testes passaram");

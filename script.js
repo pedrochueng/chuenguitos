@@ -9,8 +9,17 @@ function linkWhatsApp(numero, mensagem) {
   return `https://wa.me/${digitos}?text=${encodeURIComponent(mensagem || "")}`;
 }
 
-function especialidadesAtivas(lista) {
-  return (lista || []).filter((e) => e.ativa === true);
+// Fora do modo de apresentação, só especialidades ativas e só profissionais reais.
+function especialidadesVisiveis(lista, modoApresentacao) {
+  return (lista || []).filter(
+    (e) => e.ativa === true || (modoApresentacao === true && Boolean(e.profissionalExemplo))
+  );
+}
+
+function profissionalDe(esp, modoApresentacao) {
+  if (esp.profissional && esp.profissional.nome) return { ...esp.profissional, exemplo: false };
+  if (modoApresentacao === true && esp.profissionalExemplo) return { ...esp.profissionalExemplo, exemplo: true };
+  return null;
 }
 
 if (typeof document !== "undefined") {
@@ -44,20 +53,31 @@ if (typeof document !== "undefined") {
     return a;
   };
 
+  const demo = CLINICA.modoApresentacao === true;
+  const seloExemplo = () => el("span", "selo-exemplo", "Exemplo");
+
+  if (demo) {
+    const faixa = el("p", "faixa-apresentacao", "Versão de apresentação: profissionais e registros são ilustrativos.");
+    faixa.setAttribute("role", "note");
+    document.body.prepend(faixa);
+  }
+
   // Especialidades
   const lista = document.getElementById("lista-especialidades");
-  const ativas = especialidadesAtivas(CLINICA.especialidades);
-  lista.classList.toggle("especialidades__lista--unica", ativas.length === 1);
-  ativas.forEach((esp, i) => {
+  const visiveis = especialidadesVisiveis(CLINICA.especialidades, demo);
+  lista.classList.toggle("especialidades__lista--unica", visiveis.length === 1);
+  visiveis.forEach((esp, i) => {
     const item = el("li", "especialidade revelar");
     item.id = `esp-${esp.id}`;
     item.append(el("span", "especialidade__numero", String(i + 1).padStart(2, "0")));
 
     const corpo = el("div", "especialidade__corpo");
-    corpo.append(el("h3", "especialidade__nome", esp.nome));
+    const nome = el("h3", "especialidade__nome", esp.nome);
+    if (!esp.ativa) nome.append(seloExemplo());
+    corpo.append(nome);
     if (esp.descricao) corpo.append(el("p", "especialidade__descricao", esp.descricao));
-    const p = esp.profissional || {};
-    if (p.nome) {
+    const p = profissionalDe(esp, demo);
+    if (p) {
       const prof = el("p", "especialidade__profissional", p.nome);
       if (p.registro) prof.append(el("span", "", ` · ${p.registro}`));
       corpo.append(prof);
@@ -75,6 +95,27 @@ if (typeof document !== "undefined") {
     );
     lista.append(item);
   });
+
+  // Equipe: aparece só se houver ao menos um profissional
+  const equipe = document.getElementById("lista-equipe");
+  visiveis.forEach((esp) => {
+    const p = profissionalDe(esp, demo);
+    if (!p) return;
+    const card = el("li", "pessoa revelar");
+    const palavras = p.nome.trim().split(/\s+/);
+    const iniciais = el("span", "pessoa__iniciais", (palavras[0][0] + (palavras.length > 1 ? palavras.at(-1)[0] : "")).toUpperCase());
+    iniciais.setAttribute("aria-hidden", "true");
+    const nome = el("h3", "pessoa__nome", p.nome);
+    if (p.exemplo) nome.append(seloExemplo());
+    card.append(iniciais, nome, el("p", "pessoa__area", esp.nome));
+    if (p.registro) card.append(el("p", "pessoa__registro", p.registro));
+    if (p.bio) card.append(el("p", "pessoa__bio", p.bio));
+    equipe.append(card);
+  });
+  if (equipe.children.length) {
+    document.getElementById("equipe").hidden = false;
+    document.querySelectorAll("[data-link-equipe]").forEach((n) => (n.hidden = false));
+  }
 
   // Contato: mostra apenas campos preenchidos
   const c = CLINICA.contato || {};

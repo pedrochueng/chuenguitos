@@ -208,6 +208,32 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .especialidade .botao { justify-self: start; }
 .especialidades__lista--unica .especialidade { padding-block: clamp(2rem, 5vw, 3.5rem); }
 
+/* Modo de apresentação */
+.faixa-apresentacao {
+  margin: 0; padding: .5rem var(--gutter); text-align: center;
+  background: var(--oliva-escuro); color: var(--branco); font-size: .85rem;
+}
+.selo-exemplo {
+  display: inline-block; vertical-align: middle; margin-left: .6rem; padding: .1rem .55rem;
+  font: 500 .7rem/1.4 var(--fonte-texto); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--oliva-escuro); border: 1px solid var(--oliva); border-radius: 999px;
+}
+
+/* Equipe */
+.equipe__lista { display: grid; gap: 2.5rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
+.pessoa__iniciais {
+  display: grid; place-items: center; width: 4.5rem; height: 4.5rem; margin-bottom: 1.25rem;
+  border-radius: 50% 50% 50% 0; background: var(--creme); color: var(--terracota-escuro);
+  font-family: var(--fonte-titulo); font-size: 1.5rem;
+}
+.pessoa:nth-child(4n+2) .pessoa__iniciais { background: #E9E1BE; color: var(--oliva-escuro); }
+.pessoa:nth-child(4n+3) .pessoa__iniciais { background: #F6DDB8; }
+.pessoa:nth-child(4n+4) .pessoa__iniciais { background: #F0D3BC; }
+.pessoa__nome { font-size: 1.35rem; margin-bottom: .25rem; }
+.pessoa__area { margin: 0; font-weight: 500; color: var(--terracota-escuro); }
+.pessoa__registro { margin: 0 0 .75rem; font-size: .85rem; color: var(--texto-suave); }
+.pessoa__bio { margin: 0; color: var(--texto-suave); font-size: .95rem; }
+
 /* A clínica */
 .clinica { display: grid; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
 .clinica__imagem { max-width: 30rem; }
