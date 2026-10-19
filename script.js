@@ -151,11 +151,13 @@ if (typeof document !== "undefined") {
   const local = [c.endereco, c.cidade].filter(Boolean).join(" — ");
   if (local) {
     const bloco = el("span", "", local);
-    const mapa = el("a", "contato__mapa", "Abrir no mapa");
-    mapa.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(local)}`;
-    mapa.target = "_blank";
-    mapa.rel = "noopener noreferrer";
-    bloco.append(document.createElement("br"), mapa);
+    if (!/^a definir/i.test(c.endereco || "")) {
+      const mapa = el("a", "contato__mapa", "Abrir no mapa");
+      mapa.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(local)}`;
+      mapa.target = "_blank";
+      mapa.rel = "noopener noreferrer";
+      bloco.append(document.createElement("br"), mapa);
+    }
     linha("Endereço", "i-local", bloco);
   }
   if (c.horarios) linha("Horários", "i-relogio", c.horarios);
@@ -360,7 +362,15 @@ if (typeof document !== "undefined") {
     }
     largura = cartoes[0].offsetWidth;
     selecionar(0);
+    if (!reduzido) pos = 2.6; // começa aberto em leque e se fecha ao entrar na tela
     pintar();
+    if (!reduzido) {
+      new IntersectionObserver((es, obs) => {
+        if (!es[0].isIntersecting) return;
+        obs.disconnect();
+        assentar(0);
+      }, { threshold: 0.3 }).observe(quadro);
+    }
 
     if (n > 1) {
 
@@ -461,6 +471,94 @@ if (typeof document !== "undefined") {
   }
 
   document.getElementById("ano").textContent = new Date().getFullYear();
+
+  // ===== Movimento (o CSS correspondente está na seção "Movimento" de style.css) =====
+  // Título do hero: cada palavra sobe de uma máscara, uma depois da outra
+  const dividirTexto = (raiz) => {
+    let i = 0;
+    const percorrer = (no) =>
+      [...no.childNodes].forEach((filho) => {
+        if (filho.nodeType === 1) return percorrer(filho);
+        if (filho.nodeType !== 3) return;
+        const frag = document.createDocumentFragment();
+        filho.textContent.split(/(\s+)/).forEach((parte) => {
+          if (!parte) return;
+          if (/^\s+$/.test(parte)) return frag.append(parte);
+          const dentro = el("span", "pal__in", parte);
+          dentro.style.setProperty("--i", i++);
+          const mascara = el("span", "pal");
+          mascara.append(dentro);
+          frag.append(mascara);
+        });
+        filho.replaceWith(frag);
+      });
+    percorrer(raiz);
+  };
+  const tituloHero = document.getElementById("titulo-hero");
+  if (!reduzido) {
+    dividirTexto(tituloHero);
+    tituloHero.classList.add("dividido");
+  }
+
+  // Frase de impacto: as palavras acendem conforme a rolagem (com movimento reduzido, já nasce acesa)
+  const frase = document.getElementById("interludio");
+  let palavrasFrase = [];
+  if (frase) {
+    const todas = frase.textContent.trim().split(/\s+/);
+    frase.textContent = "";
+    todas.forEach((w, i) => {
+      frase.append(el("span", reduzido ? "pl acesa" : "pl", w));
+      if (i < todas.length - 1) frase.append(" ");
+    });
+    palavrasFrase = [...frase.children];
+  }
+
+  // Listas que entram escalonadas (fases e passos)
+  document.querySelectorAll(".fases__lista, .passos__lista").forEach((lista) =>
+    [...lista.children].forEach((li, i) => li.style.setProperty("--atraso", `${i * 0.14}s`))
+  );
+
+  if (!reduzido) {
+    // Um só laço de rolagem: barra de progresso, parallax da foto do hero e a frase acendendo
+    const barra = document.getElementById("progresso");
+    const visualHero = document.querySelector(".hero__visual");
+    let agendado = false;
+    const aoRolar = () => {
+      if (agendado) return;
+      agendado = true;
+      requestAnimationFrame(() => {
+        agendado = false;
+        const max = document.documentElement.scrollHeight - innerHeight;
+        barra.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+        visualHero.style.setProperty("--py", `${Math.min(scrollY, 900) * -0.07}px`);
+        if (palavrasFrase.length) {
+          const r = frase.getBoundingClientRect();
+          const prog = Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35)));
+          const ate = prog * palavrasFrase.length * 1.15;
+          palavrasFrase.forEach((s, i) => s.classList.toggle("acesa", i < ate));
+        }
+      });
+    };
+    addEventListener("scroll", aoRolar, { passive: true });
+    addEventListener("resize", aoRolar);
+    aoRolar();
+
+    // Botões atraídos de leve pelo cursor (só com mouse)
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      let ultimo = null;
+      const soltar = (b) => b && (b.style.removeProperty("--mx"), b.style.removeProperty("--my"));
+      document.addEventListener("pointermove", (e) => {
+        const b = e.target.closest && e.target.closest(".botao:not(.botao--pendente)");
+        if (b !== ultimo) soltar(ultimo);
+        ultimo = b;
+        if (!b) return;
+        const r = b.getBoundingClientRect();
+        const limite = (v) => Math.max(-8, Math.min(8, v));
+        b.style.setProperty("--mx", `${limite((e.clientX - (r.left + r.width / 2)) * 0.18)}px`);
+        b.style.setProperty("--my", `${limite((e.clientY - (r.top + r.height / 2)) * 0.18)}px`);
+      });
+    }
+  }
 
   // Por último: se algo acima falhar (ex.: erro em dados.js), a página fica no modo sem JS, com tudo visível.
   document.documentElement.classList.add("js");

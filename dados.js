@@ -21,7 +21,7 @@ const CLINICA = {
   emailExemplo: "contato@example.com", // fictício, só no modo de apresentação
 
   contato: {
-    endereco: "",      // PENDENTE. Ex.: "Rua ..., 123 — Sala 4"
+    endereco: "A definir", // trocar pelo endereço confirmado. Ex.: "Rua ..., 123 — Sala 4" (com "A definir" não há link de mapa)
     cidade: "",        // PENDENTE. Ex.: "Cidade — UF"
     horarios: "",      // PENDENTE. Ex.: "Segunda a sexta, das 8h às 19h"
     instagram: "psicologa_neusavalle", // só o usuário, sem @

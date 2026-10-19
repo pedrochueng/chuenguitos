@@ -180,7 +180,7 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   display: grid; gap: clamp(2.5rem, 6vw, 4rem); align-items: center;
 }
 .hero h1 {
-  font-size: clamp(2.5rem, 1.6rem + 4.6vw, 4.2rem);
+  font-size: clamp(2.2rem, 1.4rem + 4.4vw, 4.2rem);
   letter-spacing: -0.02em; margin-bottom: 1.5rem;
   text-wrap: balance;
 }
@@ -374,6 +374,80 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .js .revelar { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1); }
 .js .revelar.visivel { opacity: 1; transform: none; }
 
+/* ===== Movimento =====
+   Só transform e opacity (leve até em celular fraco). Tudo é desligado em "movimento reduzido" (bloco no fim). */
+
+/* Botões: a cor varre o botão no hover; o botão é atraído de leve pelo cursor (--mx/--my, via JS) */
+.botao {
+  position: relative; overflow: hidden; isolation: isolate;
+  translate: var(--mx, 0) var(--my, 0);
+  transition: background-color .25s ease, transform .25s ease, translate .3s cubic-bezier(.2, .7, .2, 1);
+}
+.botao::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--terracota-profundo); transform: translateX(-101%);
+  transition: transform .45s cubic-bezier(.2, .7, .2, 1);
+}
+.botao:hover { background: var(--terracota-escuro); }
+.botao:hover::before { transform: none; }
+.botao--pendente { overflow: visible; }
+.botao--pendente::before { display: none; }
+.botao--pendente:hover { background: transparent; transform: none; }
+
+/* Hero: a folha abre, o bloco pêssego desliza atrás e a foto acompanha a rolagem (--py, via JS) */
+@keyframes folha { from { opacity: 0; transform: scale(.88) rotate(-4deg); } to { opacity: 1; transform: none; } }
+@keyframes bloco { from { opacity: 0; transform: translate(-1.75rem, -1.75rem); } to { opacity: 1; transform: none; } }
+.hero__visual { animation: folha 1.3s .15s cubic-bezier(.2, .7, .2, 1) both; translate: 0 var(--py, 0); }
+.hero__visual::before { animation: bloco 1.1s .55s cubic-bezier(.2, .7, .2, 1) both; }
+
+/* Título do hero: cada palavra sobe de uma máscara */
+.pal { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .06em .14em; margin: 0 -.06em -.14em; }
+.pal__in { display: inline-block; animation: palavra 1s cubic-bezier(.2, .7, .2, 1) calc(.2s + var(--i) * .09s) both; }
+@keyframes palavra { from { transform: translateY(115%); } to { transform: none; } }
+.hero h1.dividido { animation: none; }
+@media (min-width: 900px) and (max-width: 1279.98px) { .hero h1 { font-size: 5vw; } } /* coluna do texto é estreita em tablet/notebook pequeno */
+
+/* Frase de impacto: as palavras acendem conforme a rolagem */
+.interludio { max-width: var(--largura); margin: 0 auto; padding: var(--secao) var(--gutter); }
+.interludio__texto {
+  margin: 0; max-width: 52rem; font-family: var(--fonte-titulo);
+  font-size: clamp(2rem, 1rem + 3.6vw, 3.75rem); line-height: 1.15; letter-spacing: -.015em; text-wrap: balance;
+}
+.pl { opacity: .18; transition: opacity .4s ease; }
+.pl.acesa { opacity: 1; }
+
+/* Barra de progresso da leitura, no pé do cabeçalho */
+.progresso { position: absolute; left: 0; bottom: 0; width: 100%; height: 3px; background: var(--terracota); transform: scaleX(0); transform-origin: left; }
+
+/* Traços que se desenham ao entrar na tela */
+.js .revelar .sobretitulo::before { transform: scaleX(0); transform-origin: left; transition: transform .9s cubic-bezier(.2, .7, .2, 1) .25s; }
+.js .revelar.visivel .sobretitulo::before { transform: none; }
+.js .revelar { transition-delay: var(--atraso, 0s); }
+.js .fases__lista li { border-top: 0; padding-top: 0; }
+.js .fases__lista li::before {
+  content: ""; display: block; height: 2px; margin-bottom: 1.25rem; background: var(--oliva);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 1s cubic-bezier(.2, .7, .2, 1) calc(var(--atraso, 0s) + .25s);
+}
+.js .fases__lista li.visivel::before { transform: none; }
+.js .passos__lista li .passos__num {
+  transition: background-color .5s ease calc(var(--atraso, 0s) + .5s), color .5s ease calc(var(--atraso, 0s) + .5s);
+}
+.js .passos__lista li.visivel .passos__num { background: var(--terracota-escuro); color: var(--branco); border-color: var(--terracota-escuro); }
+@media (min-width: 640px) {
+  .passos__lista li { position: relative; }
+  .js .passos__lista li:not(:last-child)::after {
+    content: ""; position: absolute; top: 1.375rem; left: 3.5rem; right: -.75rem; height: 2px; background: var(--caramelo);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .9s cubic-bezier(.2, .7, .2, 1) calc(var(--atraso, 0s) + .6s);
+  }
+  .js .passos__lista li.visivel:not(:last-child)::after { transform: none; }
+}
+
+/* Foto da clínica: aparece em cortina, da esquerda para a direita */
+.js .clinica__imagem.revelar img { clip-path: inset(0 100% 0 0); transition: clip-path 1.3s cubic-bezier(.7, 0, .2, 1) .2s; }
+.js .clinica__imagem.visivel img { clip-path: inset(0); }
+
 /* ===== Telas maiores ===== */
 @media (min-width: 640px) {
   .fases__lista, .passos__lista { grid-template-columns: repeat(3, 1fr); }
@@ -399,4 +473,6 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .revelar { opacity: 1; transform: none; }
+  .js .clinica__imagem.revelar img { clip-path: none; }
+  .js .fases__lista li::before, .js .passos__lista li:not(:last-child)::after, .js .revelar .sobretitulo::before { transform: none; }
 }
