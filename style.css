@@ -228,29 +228,22 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1;
   background: var(--fundo-claro);
 }
-/* Carrossel de fotos */
+/* Carrossel 3D dos profissionais: o JS posiciona cada cartão (transform e opacity); aqui só a cena */
 .carrossel { margin-bottom: clamp(2.5rem, 6vw, 4rem); overflow-x: clip; }
-/* Palco 3D: o item do centro (--d: 0) em destaque; os vizinhos recuam, giram e escurecem */
-.carrossel__faixa {
-  --cartao: min(68vw, 22rem);
-  position: relative; height: calc(var(--cartao) * 1.25 + 16rem); /* foto 4:5 + nome, área, registro e bio */
-  perspective: 1600px; touch-action: pan-y; user-select: none;
+.carrossel__quadro {
+  --cartao: clamp(11rem, 26vw, 18.75rem); /* largura do cartão: tudo se deriva dela */
+  perspective: calc(var(--cartao) * 3);
+  overflow: hidden; padding-block: 1.5rem;
+  cursor: grab; touch-action: pan-y; user-select: none;
 }
-@media (min-width: 640px) { .carrossel__faixa { height: calc(var(--cartao) * 1.25 + 13rem); } }
-.pessoa {
-  --d: 0; --abs: 0;
-  position: absolute; top: 0; left: 50%; width: var(--cartao); margin-left: calc(var(--cartao) / -2);
-  z-index: calc(10 - var(--abs)); cursor: pointer;
-  opacity: calc(1 - var(--abs) * .3);
-  transform: translateX(calc(var(--d) * 82%)) translateZ(calc(var(--abs) * -200px))
-    rotateY(calc(var(--d) * -35deg)) scale(calc(1 - var(--abs) * .08));
-  transition: transform .9s cubic-bezier(.2, .7, .2, 1), opacity .9s ease;
-}
-.pessoa[aria-current="true"] { cursor: default; }
-.pessoa.oculto { opacity: 0; visibility: hidden; pointer-events: none; }
-.pessoa > :not(.pessoa__foto) { transition: opacity .5s ease; text-align: center; }
-.pessoa:not([aria-current]) > :not(.pessoa__foto) { opacity: 0; }
-.carrossel__controles { display: flex; justify-content: flex-end; gap: .75rem; margin-top: .5rem; }
+.carrossel__quadro:active { cursor: grabbing; }
+.carrossel__faixa { position: relative; height: calc(var(--cartao) * 1.25); transform-style: preserve-3d; }
+.pessoa { position: absolute; top: 0; left: 50%; width: var(--cartao); will-change: transform; }
+.pessoa__foto img { -webkit-user-drag: none; }
+.carrossel__legenda { min-height: 11rem; max-width: 30rem; margin: .5rem auto 0; padding-inline: 1rem; text-align: center; }
+.carrossel__legenda > * { animation: surgir .45s ease both; }
+.pessoa__bio { max-width: 28rem; margin-inline: auto; }
+.carrossel__legenda .botao { margin-top: 1.25rem; }.carrossel__controles { display: flex; justify-content: center; gap: .75rem; margin-top: .5rem; }
 .carrossel__botao {
   display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; cursor: pointer;
   background: transparent; color: var(--terracota-escuro);

@@ -13,8 +13,8 @@ const CLINICA = {
   // ATENÇÃO: mude para false antes de publicar. Dados de exemplo nunca vão ao ar.
   modoApresentacao: true,
 
-  // PENDENTE: número oficial da clínica (usado quando a especialidade não tem número próprio)
-  whatsappGeral: "",
+  // WhatsApp da clínica: usado por todas as especialidades e profissionais que não tenham número próprio
+  whatsappGeral: "5521970766187",
 
   // PENDENTE: e-mail oficial. Vazio = a seção "E-mail" não aparece (exceto no modo de apresentação).
   email: "",
@@ -24,7 +24,7 @@ const CLINICA = {
     endereco: "",      // PENDENTE. Ex.: "Rua ..., 123 — Sala 4"
     cidade: "",        // PENDENTE. Ex.: "Cidade — UF"
     horarios: "",      // PENDENTE. Ex.: "Segunda a sexta, das 8h às 19h"
-    instagram: "",     // PENDENTE: só o usuário, sem @. Ex.: "nomedaclinica"
+    instagram: "psicologa_neusavalle", // só o usuário, sem @
     orientacoes: "",   // PENDENTE (opcional). Ex.: "Estacionamento na rua lateral"
   },
 

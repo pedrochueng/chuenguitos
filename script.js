@@ -108,6 +108,7 @@ if (typeof document !== "undefined") {
 
   // Carrossel de profissionais: só aparece se houver ao menos um
   const faixa = document.getElementById("carrossel-faixa");
+  const equipe = []; // dados de cada cartão, usados na legenda sob o carrossel
   visiveis.forEach((esp) => {
     const p = profissionalDe(esp, demo);
     if (!p) return;
@@ -128,12 +129,16 @@ if (typeof document !== "undefined") {
       marca.setAttribute("aria-hidden", "true");
       foto.append(marca);
     }
-    const nome = el("h3", "pessoa__nome", p.nome);
-    if (p.exemplo) nome.append(seloExemplo());
-    card.append(foto, nome, el("p", "pessoa__area", esp.nome));
-    if (p.registro) card.append(el("p", "pessoa__registro", p.registro));
-    if (p.bio) card.append(el("p", "pessoa__bio", p.bio));
+    card.append(foto);
     faixa.append(card);
+    equipe.push({
+      nome: p.nome,
+      exemplo: p.exemplo,
+      area: esp.nome,
+      registro: p.registro,
+      bio: p.bio,
+      whatsapp: p.whatsapp || esp.whatsapp || CLINICA.whatsappGeral, // número do profissional, da especialidade ou da clínica
+    });
   });
   const temEquipe = faixa.children.length > 0;
   document.getElementById("carrossel").hidden = !temEquipe;
@@ -219,46 +224,168 @@ if (typeof document !== "undefined") {
     });
   };
 
-  // Carrossel 3D (coverflow): o profissional do centro fica em destaque e os vizinhos giram para os lados
+  // Carrossel 3D (coverflow), portado do componente React: posição fracionária no centro,
+  // giro e recuo que suavizam com a distância, anel circular, arrastar com inércia e teclado.
   if (temEquipe) {
-    const itens = [...faixa.children];
-    const n = itens.length;
-    const meio = Math.floor(n / 2);
-    let atual = 0;
-    const posicionar = () =>
-      itens.forEach((li, i) => {
-        const d = ((i - atual + n + meio) % n) - meio; // -2..2 com 5 itens
-        li.style.setProperty("--d", d);
-        li.style.setProperty("--abs", Math.abs(d));
-        li.classList.toggle("oculto", Math.abs(d) > 2);
-        if (d === 0) li.setAttribute("aria-current", "true");
-        else li.removeAttribute("aria-current");
-      });
-    const ir = (novo) => {
-      atual = (novo + n) % n;
-      posicionar();
+    const quadro = document.getElementById("carrossel-quadro");
+    const legenda = document.getElementById("carrossel-legenda");
+    const cartoes = [...faixa.children];
+    const n = cartoes.length;
+    const circular = n > 2; // com 1 ou 2 itens não há anel para girar
+    const P = { giro: 44, profundidade: 0.6, falloff: 0.56, fade: 0.1, vao: 0.05 };
+    let pos = 0; // índice fracionário do cartão no centro: única fonte de verdade
+    let alvo = 0;
+    let largura = 0;
+    let raf = null;
+    let selecionado = -1;
+    let arraste = null;
+
+    const indiceDe = (x) => ((Math.round(x) % n) + n) % n;
+    const limitar = (x) => (circular ? x : Math.max(0, Math.min(n - 1, x)));
+
+    const mostrarLegenda = (i) => {
+      const d = equipe[i];
+      const nome = el("h3", "pessoa__nome", d.nome);
+      if (d.exemplo) nome.append(seloExemplo());
+      legenda.replaceChildren(nome, el("p", "pessoa__area", d.area));
+      if (d.registro) legenda.append(el("p", "pessoa__registro", d.registro));
+      if (d.bio) legenda.append(el("p", "pessoa__bio", d.bio));
+      legenda.append(
+        botaoWhatsApp(
+          d.whatsapp,
+          `Olá! Gostaria de obter informações sobre agendamento com ${d.nome} (${d.area.toLowerCase()}) na clínica.`,
+          `Agendar com ${d.nome}`,
+          `Agendar com ${d.nome} pelo WhatsApp`
+        )
+      );
     };
-    itens.forEach((li, i) => li.addEventListener("click", () => ir(i)));
-    posicionar();
+    const selecionar = (i) => {
+      if (i === selecionado) return;
+      selecionado = i;
+      cartoes.forEach((c, k) => (k === i ? c.setAttribute("aria-current", "true") : c.removeAttribute("aria-current")));
+      mostrarLegenda(i);
+    };
+
+    // Desenha direto no DOM: 60 atualizações por segundo não precisam de re-render
+    const pintar = () => {
+      if (!largura) return;
+      const passo = largura * (1 + P.vao);
+      cartoes.forEach((c, i) => {
+        let d = i - pos;
+        if (circular) {
+          d = ((d % n) + n) % n;
+          if (d > n / 2) d -= n; // dá a volta pelo caminho mais curto
+        }
+        const dist = Math.abs(d);
+        const rampa = Math.pow(dist, P.falloff); // giro e recuo crescem cada vez menos com a distância
+        const giro = Math.min(P.giro * rampa, 82) * Math.sign(d);
+        c.style.transform =
+          `translateX(calc(-50% + ${d * passo}px)) translateZ(${-P.profundidade * largura * rampa}px) rotateY(${-giro}deg)`;
+        // o cartão que cruza o anel na metade da volta precisa ter sumido antes do salto
+        const borda = circular ? Math.min(1, Math.max(0, n / 2 - dist)) : 1;
+        c.style.opacity = String(Math.max(0, 1 - P.fade * dist) * borda);
+        c.style.zIndex = String(100 - Math.round(dist));
+      });
+    };
+
+    const assentar = (destino) => {
+      if (raf !== null) cancelAnimationFrame(raf);
+      alvo = destino;
+      selecionar(indiceDe(destino));
+      if (reduzido) {
+        pos = destino;
+        pintar();
+        raf = null;
+        return;
+      }
+      const passo = () => {
+        const falta = destino - pos;
+        if (Math.abs(falta) < 0.0004) {
+          pos = destino;
+          pintar();
+          raf = null;
+          return;
+        }
+        pos += falta * 0.16; // desaceleração exponencial
+        pintar();
+        raf = requestAnimationFrame(passo);
+      };
+      raf = requestAnimationFrame(passo);
+    };
+    const irPara = (i) => assentar(limitar(circular ? i + Math.round((alvo - i) / n) * n : i));
+    const empurrar = (por) => assentar(limitar(Math.round(alvo) + por));
+
+    // Arrastar: só captura o ponteiro depois de 5px, para o clique num vizinho continuar funcionando
+    quadro.addEventListener("pointerdown", (e) => {
+      if (raf !== null) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+      alvo = pos;
+      arraste = { id: e.pointerId, x: e.clientX, pos, v: 0, t: performance.now(), movendo: false };
+    });
+    quadro.addEventListener("pointermove", (e) => {
+      if (!arraste || arraste.id !== e.pointerId) return;
+      if (!arraste.movendo && Math.abs(e.clientX - arraste.x) > 5) {
+        arraste.movendo = true;
+        quadro.setPointerCapture(e.pointerId);
+      }
+      if (!arraste.movendo || !largura) return;
+      const agora = performance.now();
+      const antes = pos;
+      pos = limitar(arraste.pos - (e.clientX - arraste.x) / (largura * (1 + P.vao)));
+      arraste.v = ((pos - antes) / Math.max(agora - arraste.t, 1)) * 1000; // cartões por segundo
+      arraste.t = agora;
+      selecionar(indiceDe(pos));
+      pintar();
+    });
+    const soltar = (e) => {
+      if (!arraste || arraste.id !== e.pointerId) return;
+      const a = arraste;
+      arraste = null;
+      if (!a.movendo) {
+        // Clique: o navegador não encontra os cartões girados pelo hit-test, então resolvemos pela posição na tela
+        const sob = cartoes
+          .filter((c) => {
+            const r = c.getBoundingClientRect();
+            return Number(c.style.opacity) > 0.05 && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+          })
+          .sort((x, y) => y.style.zIndex - x.style.zIndex)[0];
+        if (sob) irPara(cartoes.indexOf(sob));
+        return;
+      }
+      const levado = Math.max(-2, Math.min(2, a.v * 0.18)); // um arremesso leva até 2 cartões
+      assentar(limitar(Math.round(pos + levado)));
+    };
+    quadro.addEventListener("pointerup", soltar);
+    quadro.addEventListener("pointercancel", soltar);
+    quadro.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") empurrar(-1);
+      else if (e.key === "ArrowRight") empurrar(1);
+      else return;
+      e.preventDefault();
+    });
+
+    // A largura do cartão define passo, profundidade e perspectiva
+    new ResizeObserver(() => {
+      largura = cartoes[0].offsetWidth;
+      pintar();
+    }).observe(quadro);
+    cartoes.forEach((c, i) => {
+      c.setAttribute("role", "group");
+      c.setAttribute("aria-roledescription", "slide");
+      c.setAttribute("aria-label", `${i + 1} de ${n}`);
+    });
+    largura = cartoes[0].offsetWidth;
+    selecionar(0);
+    pintar();
 
     if (n > 1) {
-      document.getElementById("carrossel-ant").addEventListener("click", () => ir(atual - 1));
-      document.getElementById("carrossel-prox").addEventListener("click", () => ir(atual + 1));
-      faixa.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowLeft") ir(atual - 1);
-        else if (e.key === "ArrowRight") ir(atual + 1);
-        else return;
-        e.preventDefault();
-      });
-      let x0 = null; // deslizar com o dedo ou o mouse
-      faixa.addEventListener("pointerdown", (e) => (x0 = e.clientX));
-      faixa.addEventListener("pointerup", (e) => {
-        if (x0 !== null && Math.abs(e.clientX - x0) > 40) ir(atual + (e.clientX < x0 ? 1 : -1));
-        x0 = null;
-      });
+      document.getElementById("carrossel-ant").addEventListener("click", () => empurrar(-1));
+      document.getElementById("carrossel-prox").addEventListener("click", () => empurrar(1));
       document.getElementById("carrossel-controles").hidden = false;
 
-      // Troca automática: nunca com movimento reduzido; para ao interagir, fora da tela ou com o botão
+      // Troca automática: nunca com movimento reduzido; para ao interagir, fora da tela ou no botão
       if (!reduzido) {
         let pausadoPeloBotao = false;
         let interagindo = false;
@@ -276,12 +403,11 @@ if (typeof document !== "undefined") {
         regiao.addEventListener("focusout", () => (interagindo = false));
         new IntersectionObserver((es) => (visivel = es[0].isIntersecting)).observe(regiao);
         setInterval(() => {
-          if (!pausadoPeloBotao && !interagindo && visivel && !document.hidden) ir(atual + 1);
+          if (!pausadoPeloBotao && !interagindo && visivel && !document.hidden && !arraste) empurrar(1);
         }, 4500);
       }
     }
   }
-
   // Fotos do hero: troca sozinha (fade), com botão de pausa; parada com movimento reduzido
   const fotos = [...document.querySelectorAll("#hero-fotos img")];
   if (fotos.length > 1 && !reduzido) {

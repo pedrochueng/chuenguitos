@@ -40,7 +40,8 @@ O `_headers` não é aplicado pelo servidor local; ele vale na hospedagem.
 ## Dados pendentes da cliente
 
 - [ ] Nome definitivo da clínica e logotipo
-- [ ] Número oficial de WhatsApp (e de cada profissional, se houver)
+- [x] WhatsApp: `5521970766187` está em `whatsappGeral` (clínica, especialidades e profissionais). A cliente confirma se é o número oficial; se um profissional tiver número próprio, vai em `profissional.whatsapp`.
+- [x] Instagram: `psicologa_neusavalle` está em `contato.instagram` (a cliente confirma)
 - [ ] E-mail oficial da clínica
 - [ ] Nome da psicóloga e número do CRP (exigido pelo Código de Ética do psicólogo em divulgações)
 - [ ] Endereço, cidade, horários, Instagram e orientações de chegada

@@ -82,7 +82,10 @@
       <!-- Carrossel dos profissionais: montado por script.js a partir de dados.js. Fica oculto se não houver profissional. -->
       <div class="carrossel revelar" id="carrossel" role="region" aria-roledescription="carrossel" aria-label="Profissionais" hidden>
         <p class="sobretitulo">Nossos profissionais</p>
-        <ul class="carrossel__faixa" id="carrossel-faixa" tabindex="0" aria-label="Lista de profissionais (use as setas do teclado para trocar)"></ul>
+        <div class="carrossel__quadro" id="carrossel-quadro" tabindex="0" aria-label="Profissionais: arraste ou use as setas do teclado para trocar">
+          <ul class="carrossel__faixa" id="carrossel-faixa"></ul>
+        </div>
+        <div class="carrossel__legenda" id="carrossel-legenda" aria-live="polite"></div>
         <div class="carrossel__controles" id="carrossel-controles" hidden>
           <button class="carrossel__botao carrossel__botao--ant" id="carrossel-ant" type="button" aria-controls="carrossel-faixa" aria-label="Profissional anterior">
             <svg class="icone" aria-hidden="true"><use href="assets/icons/icones.svg#i-seta"></use></svg>

@@ -36,6 +36,11 @@ for (const esp of CLINICA.especialidades) {
 assert.equal(profissionalDe(CLINICA.especialidades[0], true).exemplo, true);
 assert.equal(profissionalDe({ profissional: { nome: "Real" }, profissionalExemplo: { nome: "X" } }, true).nome, "Real", "real tem prioridade");
 
+// Os números configurados em dados.js, quando preenchidos, precisam gerar link válido
+for (const numero of [CLINICA.whatsappGeral, ...CLINICA.especialidades.map((e) => e.whatsapp)]) {
+  if (numero) assert.ok(linkWhatsApp(numero, "x"), `número inválido em dados.js: ${numero}`);
+}
+
 // mailto: codificação, quebras de linha e destinatário único
 const m = montarMailto("a@b.com", "Ana & Cia", "linha 1\nlinha 2?x=1");
 assert.ok(m.startsWith("mailto:a@b.com?subject=Contato%20pelo%20site&body="));
