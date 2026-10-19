@@ -14,7 +14,7 @@ _headers            Cabeçalhos de segurança (Cloudflare Pages / Netlify)
 robots.txt
 assets/fonts/       Poppins e Fraunces (locais, licença OFL, inclusa)
 assets/icons/       favicon.svg (marca provisória) e icones.svg (Lucide, ISC)
-assets/images/      Composições gráficas provisórias (substituíveis por fotos)
+assets/images/      hero.webp e clinica.webp: fotos de EXEMPLO (Unsplash), trocar pelas da cliente
 tests/              Teste do gerador de links de WhatsApp
 ```
 
@@ -65,6 +65,12 @@ Netlify também lê `_headers`. **GitHub Pages não permite cabeçalhos personal
 **Na hospedagem (`_headers`):** CSP restritiva (só recursos do próprio domínio, sem frames e sem formulários), `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, HSTS e COOP.
 
 Nenhum site é absolutamente seguro. Mapa embutido, analytics ou formulário futuros exigem ajustar a CSP e a política de privacidade.
+
+## Modo de apresentação e fotos de exemplo
+
+- `modoApresentacao: true` em `dados.js` mostra 4 profissionais fictícios (registros zerados), a seção Equipe e uma faixa de aviso. **Antes de publicar, mude para `false`.**
+- As fotos de exemplo vêm do Unsplash (licença livre, inclusive comercial, sem exigir crédito): `hero.webp` de [Archee Lal](https://unsplash.com/photos/warm-light-illuminates-a-bedroom-with-a-bed-and-plant-hkCXcR2mcds) e `clinica.webp` de [Simona Sergi](https://unsplash.com/photos/cozy-living-room-with-natural-elements-and-warm-tones-8fF_tF2ZMSQ). Não são do espaço da clínica: trocar antes de publicar.
+- As respostas das Perguntas frequentes não afirmam valores, convênios nem modalidades. Se a cliente quiser acrescentá-los, só com dados confirmados.
 
 ## Decisões
 

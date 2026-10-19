@@ -130,7 +130,15 @@ if (typeof document !== "undefined") {
     dl.append(grupo);
   };
   const local = [c.endereco, c.cidade].filter(Boolean).join(" — ");
-  if (local) linha("Endereço", "i-local", local);
+  if (local) {
+    const bloco = el("span", "", local);
+    const mapa = el("a", "contato__mapa", "Abrir no mapa");
+    mapa.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(local)}`;
+    mapa.target = "_blank";
+    mapa.rel = "noopener noreferrer";
+    bloco.append(document.createElement("br"), mapa);
+    linha("Endereço", "i-local", bloco);
+  }
   if (c.horarios) linha("Horários", "i-relogio", c.horarios);
   const usuarioInsta = String(c.instagram || "").replace(/[^\w.]/g, "");
   if (usuarioInsta) {

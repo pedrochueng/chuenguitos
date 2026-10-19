@@ -174,7 +174,7 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   content: ""; position: absolute; inset: 1.25rem -1.25rem -1.25rem 1.25rem;
   border: 1px solid var(--caramelo); border-radius: 9999px 9999px 0 0; z-index: -1; /* raio enorme = semicírculo exato */
 }
-.hero__imagem img { width: 100%; }
+.hero__imagem img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 9999px 9999px 0 0; background: var(--creme); }
 
 /* Entrada do hero (só CSS) */
 @keyframes surgir { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
@@ -236,7 +236,8 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 
 /* A clínica */
 .clinica { display: grid; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
-.clinica__imagem { max-width: 30rem; }
+.clinica__imagem { max-width: 34rem; }
+.clinica__imagem img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8rem .5rem .5rem .5rem; background: var(--creme); }
 .clinica__texto h2 { margin-bottom: 1.5rem; }
 .clinica__texto p:not(.sobretitulo) { color: var(--texto-suave); max-width: 34rem; }
 
@@ -262,11 +263,36 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   font-family: var(--fonte-titulo); font-size: 1.25rem; transform: translateY(.35rem);
 }
 
-/* Contato */
-.contato { display: grid; gap: 2.5rem; }
-.contato__cabeca h2 { margin-bottom: 1rem; }
-.contato__cabeca p:not(.sobretitulo) { color: var(--texto-suave); }
-#contato-whatsapp { margin-top: 1.5rem; }
+/* Perguntas frequentes (details nativo, sem JS) */
+.faq__lista { max-width: 46rem; border-top: 1px solid var(--linha); }
+.faq details { border-bottom: 1px solid var(--linha); }
+.faq summary {
+  display: flex; justify-content: space-between; align-items: center; gap: 1.5rem;
+  min-height: 3.5rem; padding: 1rem 0; cursor: pointer; list-style: none;
+  font-family: var(--fonte-titulo); font-size: 1.2rem; line-height: 1.3;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+"; flex: none; width: 2rem; height: 2rem; display: grid; place-items: center;
+  border: 1px solid var(--caramelo); border-radius: 50%; color: var(--terracota-escuro);
+  font: 300 1.4rem/1 var(--fonte-texto); transition: transform .25s ease;
+}
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { margin: 0 0 1.25rem; color: var(--texto-suave); max-width: 38rem; }
+
+/* Contato: faixa creme em largura total, botão em destaque */
+.contato { position: relative; display: grid; gap: 2.5rem; }
+.contato::before { content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1; background: var(--creme); }
+.contato__cabeca h2 { margin-bottom: 1rem; font-size: clamp(2.2rem, 1.4rem + 3.5vw, 3.6rem); }
+.contato__cabeca p:not(.sobretitulo) { color: var(--texto); }
+.contato .sobretitulo { color: var(--terracota-escuro); }
+.contato .sobretitulo::before { background: var(--terracota-escuro); }
+.contato .botao { min-height: 3.5rem; padding-inline: 2rem; }
+.contato .botao--pendente { border-color: var(--texto-suave); color: var(--texto); }
+.contato .aviso { color: var(--texto); }
+.contato__item dt { color: var(--terracota-escuro); }
+.contato__mapa { font-size: .92rem; }
+#contato-whatsapp { margin-top: 1.75rem; }
 .contato__dados { margin: 0; display: grid; gap: 1.5rem; align-content: start; }
 .contato__dados:empty { display: none; }
 .contato__item dt {
