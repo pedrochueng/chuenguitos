@@ -14,8 +14,6 @@ function especialidadesAtivas(lista) {
 }
 
 if (typeof document !== "undefined") {
-  document.documentElement.classList.add("js");
-
   const el = (tag, classe, texto) => {
     const n = document.createElement(tag);
     if (classe) n.className = classe;
@@ -162,4 +160,7 @@ if (typeof document !== "undefined") {
   }
 
   document.getElementById("ano").textContent = new Date().getFullYear();
+
+  // Por último: se algo acima falhar (ex.: erro em dados.js), a página fica no modo sem JS, com tudo visível.
+  document.documentElement.classList.add("js");
 }
