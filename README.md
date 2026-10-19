@@ -11,6 +11,7 @@ style.css           Identidade visual, layout e responsividade (cores em :root)
 dados.js            ÚNICO arquivo de dados: WhatsApp, contato e especialidades
 script.js           Renderização, links de WhatsApp, menu e animações
 _headers            Cabeçalhos de segurança (Cloudflare Pages / Netlify)
+vercel.json         Mesmos cabeçalhos para a Vercel (a Vercel NÃO lê o _headers). Inclui noindex enquanto for demo
 robots.txt
 assets/fonts/       Poppins e Cormorant Garamond (locais, licença OFL, inclusa)
 assets/icons/       favicon.svg (marca provisória) e icones.svg (Lucide, ISC)
@@ -91,3 +92,8 @@ Nenhum site é absolutamente seguro. Mapa embutido, analytics ou formulário fut
 - `node tests/whatsapp.test.mjs`: links, codificação da mensagem, números inválidos e filtro de especialidades ativas — passou.
 - Playwright, Chromium: sem rolagem horizontal em 320, 375, 390, 430, 768, 1024, 1366 e 1920 px; menu mobile abre, fecha com Esc e devolve o foco; âncoras internas existem; com número de teste, os botões geram `https://wa.me/...` com a mensagem da especialidade e `rel="noopener noreferrer"`; sem número, nenhum link `wa.me` é publicado; com `prefers-reduced-motion`, todo conteúdo fica visível e sem animação; foco visível e link "Pular para o conteúdo"; fontes locais carregadas; nenhum erro no console.
 - **Não testado:** Safari/iOS e Firefox, leitor de tela real, cabeçalhos em produção (dependem do deploy), WhatsApp abrindo em celular real.
+
+## Vercel (demo no ar)
+
+- `vercel.json` aplica os cabeçalhos de segurança e `X-Robots-Tag: noindex, nofollow`. `robots.txt` está em `Disallow: /`. **Antes do lançamento real:** remover o `noindex` do `vercel.json`, trocar o `robots.txt` para `Allow: /` + `Sitemap:`, criar `sitemap.xml`, `canonical`/`og:url`/`og:image` com o domínio e `modoApresentacao: false`.
+- Deploy: `vercel --prod` na pasta do projeto.

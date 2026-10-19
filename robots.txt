@@ -1,4 +1,3 @@
 User-agent: *
-Allow: /
-# PENDENTE: com o domínio definido, criar sitemap.xml e adicionar:
-# Sitemap: https://SEU-DOMINIO/sitemap.xml
+Disallow: /
+# DEMO: bloqueado enquanto modoApresentacao for true. Ao publicar de verdade, trocar por "Allow: /" e incluir o Sitemap.
