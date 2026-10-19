@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- PENDENTE: trocar "Clínica Multidisciplinar" pelo nome definitivo em todo o projeto -->
+  <title>Clínica Multidisciplinar — Psicologia e cuidado para você e sua família</title>
+  <meta name="description" content="Espaço de escuta acolhedora e acompanhamento profissional em saúde mental e desenvolvimento humano. Agende pelo WhatsApp.">
+  <meta name="theme-color" content="#FFFFFF">
+  <!-- PENDENTE: com o domínio definido, adicionar <link rel="canonical">, og:url e og:image (URLs absolutas) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Clínica Multidisciplinar">
+  <meta property="og:description" content="Escuta acolhedora e acompanhamento profissional em diferentes momentos da vida.">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script src="dados.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="cabecalho">
+    <div class="cabecalho__interno">
+      <!-- PENDENTE: logotipo definitivo -->
+      <a class="marca" href="#inicio" aria-label="Clínica Multidisciplinar — início">
+        <img src="assets/icons/favicon.svg" alt="" width="32" height="32">
+        <span>Clínica Multidisciplinar</span>
+      </a>
+
+      <button class="botao-menu" id="botao-menu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
+        <span class="botao-menu__linhas" aria-hidden="true"></span>
+      </button>
+
+      <nav class="menu" id="menu" aria-label="Principal">
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#especialidades">Especialidades</a></li>
+          <li><a href="#clinica">A clínica</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+        <a class="botao botao--pequeno" href="#especialidades">Agendar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio" aria-labelledby="titulo-hero">
+      <div class="hero__texto">
+        <p class="sobretitulo">Saúde mental e desenvolvimento humano</p>
+        <h1 id="titulo-hero">Um espaço de cuidado para <em>você</em> e sua família.</h1>
+        <p class="hero__sub">Escuta acolhedora e acompanhamento profissional nos diferentes momentos da vida.</p>
+        <div class="hero__acoes">
+          <a class="botao" href="#especialidades">Encontrar meu atendimento</a>
+          <a class="link-seta" href="#clinica">Conheça a clínica
+            <svg class="icone" aria-hidden="true"><use href="assets/icons/icones.svg#i-seta"></use></svg>
+          </a>
+        </div>
+      </div>
+      <figure class="hero__imagem">
+        <img src="assets/images/hero-arco.svg" alt="" width="400" height="500" fetchpriority="high">
+      </figure>
+    </section>
+
+    <section class="secao especialidades" id="especialidades" aria-labelledby="titulo-especialidades">
+      <div class="secao__cabeca revelar">
+        <p class="sobretitulo">Especialidades</p>
+        <h2 id="titulo-especialidades">Encontre o cuidado que você procura</h2>
+      </div>
+      <ul class="especialidades__lista" id="lista-especialidades"></ul>
+      <noscript><p class="aviso">Para ver as especialidades e agendar, ative o JavaScript ou consulte a seção de contato.</p></noscript>
+      <p class="nota revelar">O contato pelo WhatsApp inicia uma solicitação de agendamento. O horário é confirmado pela clínica.</p>
+    </section>
+
+    <section class="secao clinica" id="clinica" aria-labelledby="titulo-clinica">
+      <figure class="clinica__imagem revelar">
+        <img src="assets/images/clinica-formas.svg" alt="" width="480" height="400" loading="lazy">
+      </figure>
+      <div class="clinica__texto revelar">
+        <p class="sobretitulo">A clínica</p>
+        <h2 id="titulo-clinica">Escuta, acolhimento e cuidado profissional</h2>
+        <p>Acreditamos que cuidar da saúde mental começa por um espaço onde cada pessoa se sinta ouvida, sem pressa e sem julgamentos.</p>
+        <p>A clínica nasce com a psicologia e com o desejo de, ao longo do tempo, reunir diferentes especialidades em torno do mesmo propósito: acompanhar pessoas e famílias com respeito, ética e atenção à história de cada um.</p>
+      </div>
+    </section>
+
+    <section class="secao fases" aria-labelledby="titulo-fases">
+      <div class="secao__cabeca revelar">
+        <p class="sobretitulo">Cuidado em diferentes fases</p>
+        <h2 id="titulo-fases">Cada momento da vida pede uma escuta própria</h2>
+      </div>
+      <ul class="fases__lista">
+        <li class="revelar">
+          <h3>Vida adulta</h3>
+          <p>Para quem deseja olhar para si, para suas relações e para as mudanças do caminho.</p>
+        </li>
+        <li class="revelar">
+          <h3>Famílias e responsáveis</h3>
+          <p>Para pais e cuidadores que buscam orientação e apoio no dia a dia familiar.</p>
+        </li>
+        <li class="revelar">
+          <h3>Infância e adolescência</h3>
+          <p>Para os primeiros anos e as descobertas que vêm com eles.</p>
+        </li>
+      </ul>
+      <p class="nota revelar">Os atendimentos disponíveis para cada fase são informados no contato com a clínica.</p>
+    </section>
+
+    <section class="secao passos" id="como-agendar" aria-labelledby="titulo-passos">
+      <div class="secao__cabeca revelar">
+        <p class="sobretitulo">Como agendar</p>
+        <h2 id="titulo-passos">Três passos simples</h2>
+      </div>
+      <ol class="passos__lista">
+        <li class="revelar"><span class="passos__num" aria-hidden="true">1</span><p>Escolha a <a href="#especialidades">especialidade</a> desejada.</p></li>
+        <li class="revelar"><span class="passos__num" aria-hidden="true">2</span><p>Entre em contato pelo WhatsApp.</p></li>
+        <li class="revelar"><span class="passos__num" aria-hidden="true">3</span><p>Converse com a equipe para verificar disponibilidade e orientações.</p></li>
+      </ol>
+    </section>
+
+    <section class="secao contato" id="contato" aria-labelledby="titulo-contato">
+      <div class="contato__cabeca revelar">
+        <p class="sobretitulo">Contato</p>
+        <h2 id="titulo-contato">Vamos conversar</h2>
+        <p>Envie uma mensagem para tirar dúvidas ou solicitar um horário.</p>
+        <div id="contato-whatsapp"></div>
+      </div>
+      <dl class="contato__dados revelar" id="dados-contato"></dl>
+      <p class="aviso" id="contato-pendente" hidden>Endereço, horários e redes sociais serão publicados em breve.</p>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape__interno">
+      <p class="rodape__nome">Clínica Multidisciplinar</p>
+      <nav aria-label="Rodapé">
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#especialidades">Especialidades</a></li>
+          <li><a href="#clinica">A clínica</a></li>
+          <li><a href="#contato">Contato</a></li>
+          <li><a href="privacy.html">Política de privacidade</a></li>
+        </ul>
+      </nav>
+      <!-- PENDENTE: nome da psicóloga responsável e CRP, quando confirmados -->
+      <p class="rodape__legal">© <span id="ano">2026</span> Clínica Multidisciplinar. Este site não substitui atendimento profissional. Em situação de emergência, ligue 192 (SAMU) ou 188 (CVV).</p>
+    </div>
+  </footer>
+</body>
+</html>
