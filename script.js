@@ -320,6 +320,24 @@ if (typeof document !== "undefined") {
   });
   matchMedia("(min-width: 900px)").addEventListener("change", () => definirMenu(false));
 
+  // Menu: marca a seção que está na altura do meio da tela
+  const pares = [...document.querySelectorAll(".menu ul a")]
+    .map((a) => [a, document.querySelector(a.getAttribute("href"))])
+    .filter(([, secao]) => secao);
+  if ("IntersectionObserver" in window) {
+    const espiao = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          pares.forEach(([a, secao]) =>
+            secao === e.target ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")
+          );
+        }),
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    pares.forEach(([, secao]) => espiao.observe(secao));
+  }
+
   // Cabeçalho compacto após rolar
   const cabecalho = document.querySelector(".cabecalho");
   const marcarRolagem = () => cabecalho.classList.toggle("rolado", scrollY > 12);

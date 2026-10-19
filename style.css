@@ -146,6 +146,10 @@ figure { margin: 0; }
   color: var(--texto); text-decoration: none; font-weight: 500;
 }
 .menu ul a:hover { color: var(--terracota-escuro); }
+.menu ul a[aria-current] {
+  color: var(--terracota-escuro);
+  text-decoration: underline 2px var(--caramelo); text-underline-offset: .4em;
+}
 
 /* Sem JS: menu sempre visível, em linha */
 html:not(.js) .cabecalho__interno:has(.menu) { height: auto; flex-wrap: wrap; padding-block: .75rem; }
