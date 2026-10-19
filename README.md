@@ -12,7 +12,7 @@ dados.js            ÚNICO arquivo de dados: WhatsApp, contato e especialidades
 script.js           Renderização, links de WhatsApp, menu e animações
 _headers            Cabeçalhos de segurança (Cloudflare Pages / Netlify)
 robots.txt
-assets/fonts/       Poppins e Fraunces (locais, licença OFL, inclusa)
+assets/fonts/       Poppins e Cormorant Garamond (locais, licença OFL, inclusa)
 assets/icons/       favicon.svg (marca provisória) e icones.svg (Lucide, ISC)
 assets/images/      hero/ (4 fotos do slideshow), clinica.webp e equipe/: fotos de EXEMPLO (Unsplash), trocar pelas da cliente
 tests/              Teste do gerador de links de WhatsApp
@@ -82,7 +82,7 @@ Nenhum site é absolutamente seguro. Mapa embutido, analytics ou formulário fut
 
 ## Decisões
 
-- **Fonte de títulos:** a Le Major é comercial e não tem licença web gratuita. Usamos a Fraunces (OFL), serifada editorial semelhante. Com a licença web da Le Major, basta trocar o `@font-face` e `--fonte-titulo`.
+- **Fonte de títulos:** a Le Major é comercial e não tem licença web gratuita. Usamos a Cormorant Garamond (OFL), serifada fina e de alto contraste, a mais próxima gratuita. Com a licença web da Le Major, basta trocar o `@font-face` e `--fonte-titulo`.
 - **Contraste:** o terracota `#B7631D` tem 4,4:1 no branco e serve apenas a títulos grandes e detalhes. Textos pequenos e botões usam `#94501A` (6,1:1). Caramelo e oliva são decorativos.
 - **Mapa:** não incluído, pois o endereço está pendente. Se incluído, prefira um link "Abrir no mapa" a um iframe (sem impacto de privacidade e CSP).
 

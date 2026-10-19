@@ -515,7 +515,7 @@ if (typeof document !== "undefined") {
 
   // Listas que entram escalonadas (fases e passos)
   document.querySelectorAll(".fases__lista, .passos__lista").forEach((lista) =>
-    [...lista.children].forEach((li, i) => li.style.setProperty("--atraso", `${i * 0.14}s`))
+    [...lista.children].forEach((li, i) => li.style.setProperty("--atraso", `${i * (lista.classList.contains("passos__lista") ? 1.5 : 0.14)}s`))
   );
 
   if (!reduzido) {

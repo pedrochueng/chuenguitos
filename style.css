@@ -1,6 +1,7 @@
 /* ===== Fontes (locais, licença OFL) ===== */
-@font-face { font-family: "Fraunces"; src: url("assets/fonts/fraunces-var.woff2") format("woff2"); font-weight: 300 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Fraunces"; src: url("assets/fonts/fraunces-var-italic.woff2") format("woff2"); font-weight: 300 700; font-style: italic; font-display: swap; }
+@font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/cormorant-garamond-latin-300-normal.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; size-adjust: 112%; }
+@font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/cormorant-garamond-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; size-adjust: 112%; }
+@font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/cormorant-garamond-latin-300-italic.woff2") format("woff2"); font-weight: 300; font-style: italic; font-display: swap; size-adjust: 112%; }
 @font-face { font-family: "Poppins"; src: url("assets/fonts/poppins-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Poppins"; src: url("assets/fonts/poppins-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 @font-face { font-family: "Poppins"; src: url("assets/fonts/poppins-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
@@ -27,7 +28,7 @@
   --fundo-claro: #FFF7EC;
   --linha: #EBD9C2;
 
-  --fonte-titulo: "Fraunces", Georgia, "Times New Roman", serif;
+  --fonte-titulo: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --fonte-texto: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --largura: 72rem;
@@ -431,14 +432,14 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 }
 .js .fases__lista li.visivel::before { transform: none; }
 .js .passos__lista li .passos__num {
-  transition: background-color .5s ease calc(var(--atraso, 0s) + .5s), color .5s ease calc(var(--atraso, 0s) + .5s);
+  transition: background-color .9s ease calc(var(--atraso, 0s) + .3s), color .9s ease calc(var(--atraso, 0s) + .3s);
 }
 .js .passos__lista li.visivel .passos__num { background: var(--terracota-escuro); color: var(--branco); border-color: var(--terracota-escuro); }
 @media (min-width: 640px) {
   .passos__lista li { position: relative; }
   .js .passos__lista li:not(:last-child)::after {
     content: ""; position: absolute; top: 1.375rem; left: 3.5rem; right: -.75rem; height: 2px; background: var(--caramelo);
-    transform: scaleX(0); transform-origin: left;
+    transition: transform 1.4s cubic-bezier(.4, 0, .2, 1) calc(var(--atraso, 0s) + .9s);
     transition: transform .9s cubic-bezier(.2, .7, .2, 1) calc(var(--atraso, 0s) + .6s);
   }
   .js .passos__lista li.visivel:not(:last-child)::after { transform: none; }
