@@ -381,29 +381,19 @@ if (typeof document !== "undefined") {
     pintar();
 
     if (n > 1) {
-      document.getElementById("carrossel-ant").addEventListener("click", () => empurrar(-1));
-      document.getElementById("carrossel-prox").addEventListener("click", () => empurrar(1));
-      document.getElementById("carrossel-controles").hidden = false;
 
-      // Troca automática: nunca com movimento reduzido; para ao interagir, fora da tela ou no botão
+      // Troca automática: nunca com movimento reduzido; para ao interagir (mouse, foco, arrasto) ou quando sai da tela
       if (!reduzido) {
-        let pausadoPeloBotao = false;
         let interagindo = false;
         let visivel = false;
         const regiao = document.getElementById("carrossel");
-        ligarPausa(
-          document.getElementById("carrossel-pausa"),
-          "Pausar a troca automática",
-          "Retomar a troca automática",
-          (p) => (pausadoPeloBotao = p)
-        );
         regiao.addEventListener("pointerenter", () => (interagindo = true));
         regiao.addEventListener("pointerleave", () => (interagindo = false));
         regiao.addEventListener("focusin", () => (interagindo = true));
         regiao.addEventListener("focusout", () => (interagindo = false));
         new IntersectionObserver((es) => (visivel = es[0].isIntersecting)).observe(regiao);
         setInterval(() => {
-          if (!pausadoPeloBotao && !interagindo && visivel && !document.hidden && !arraste) empurrar(1);
+          if (!interagindo && visivel && !document.hidden && !arraste) empurrar(1);
         }, 4500);
       }
     }

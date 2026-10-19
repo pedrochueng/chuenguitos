@@ -205,8 +205,8 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   background: var(--branco); color: var(--terracota-escuro); border: 0; border-radius: 50%;
   touch-action: manipulation;
 }
-.hero__pausa[aria-pressed="false"] .ico-play, .carrossel__botao[aria-pressed="false"] .ico-play { display: none; }
-.hero__pausa[aria-pressed="true"] .ico-pausa, .carrossel__botao[aria-pressed="true"] .ico-pausa { display: none; }
+.hero__pausa[aria-pressed="false"] .ico-play { display: none; }
+.hero__pausa[aria-pressed="true"] .ico-pausa { display: none; }
 
 /* Entrada do hero (só CSS) */
 @keyframes surgir { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
@@ -243,17 +243,7 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .carrossel__legenda { min-height: 11rem; max-width: 30rem; margin: .5rem auto 0; padding-inline: 1rem; text-align: center; }
 .carrossel__legenda > * { animation: surgir .45s ease both; }
 .pessoa__bio { max-width: 28rem; margin-inline: auto; }
-.carrossel__legenda .botao { margin-top: 1.25rem; }.carrossel__controles { display: flex; justify-content: center; gap: .75rem; margin-top: .5rem; }
-.carrossel__botao {
-  display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; cursor: pointer;
-  background: transparent; color: var(--terracota-escuro);
-  border: 1px solid var(--caramelo); border-radius: 50%; touch-action: manipulation;
-  transition: background-color .25s ease, color .25s ease;
-}
-.carrossel__botao:hover:not(:disabled) { background: var(--terracota-escuro); color: var(--branco); border-color: var(--terracota-escuro); }
-.carrossel__botao:disabled { opacity: .35; cursor: default; }
-.carrossel__botao--ant .icone { transform: rotate(180deg); }
-
+.carrossel__legenda .botao { margin-top: 1.25rem; }
 .especialidades__lista { border-top: 1px solid var(--linha); }
 .especialidade {
   display: grid; gap: 1rem 2rem;
