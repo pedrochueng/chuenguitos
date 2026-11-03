@@ -24,7 +24,7 @@ assert.equal(linkWhatsApp(undefined, msg), null);
 
 // Array.from: arrays criados no vm têm outro protótipo e falham no deepStrictEqual
 const ids = (modo) => Array.from(especialidadesVisiveis(CLINICA.especialidades, modo), (e) => e.id);
-assert.deepEqual(ids(false), ["psicologia"], "publicado: só psicologia ativa");
+assert.deepEqual(ids(false), ["psicologia", "fonoaudiologia", "psiquiatria", "terapias", "infantil"], "publicado: todas as especialidades ativas");
 assert.equal(ids(true).length, 5, "apresentação: mostra os exemplos");
 assert.equal(especialidadesVisiveis([{ ativa: "true" }, { ativa: 1 }], false).length, 0, "só ativa === true");
 

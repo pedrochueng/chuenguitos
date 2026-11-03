@@ -52,11 +52,11 @@ const CLINICA = {
       whatsapp: "", // vazio = usa whatsappGeral
       mensagem: "Olá! Gostaria de obter informações sobre agendamento para psicologia na clínica.",
     },
-    // Especialidades futuras: mude ativa para true apenas quando confirmadas.
+    // VERSÃO COM TODAS AS ESPECIALIDADES (branch todas-especialidades). Sem profissional cadastrado, o cartão mostra a inicial e "Agendar {especialidade}".
     {
       id: "fonoaudiologia",
       nome: "Fonoaudiologia",
-      ativa: false,
+      ativa: true,
       descricao:
         "Avaliação e acompanhamento da comunicação: fala, linguagem, voz, audição e deglutição, em crianças e adultos.",
       profissional: { nome: "", registro: "", bio: "" },
@@ -71,7 +71,7 @@ const CLINICA = {
     {
       id: "psiquiatria",
       nome: "Psiquiatria",
-      ativa: false,
+      ativa: true,
       descricao:
         "Avaliação médica da saúde mental e acompanhamento do tratamento, em diálogo com os demais profissionais.",
       profissional: { nome: "", registro: "", bio: "" },
@@ -86,7 +86,7 @@ const CLINICA = {
     {
       id: "terapias",
       nome: "Terapia ocupacional",
-      ativa: false,
+      ativa: true,
       descricao:
         "Apoio à autonomia nas atividades do dia a dia, da rotina escolar à vida adulta.",
       profissional: { nome: "", registro: "", bio: "" },
@@ -101,7 +101,7 @@ const CLINICA = {
     {
       id: "infantil",
       nome: "Atendimento infantil",
-      ativa: false,
+      ativa: true,
       descricao:
         "Escuta da criança por meio do brincar, com orientação próxima aos pais e responsáveis.",
       profissional: { nome: "", registro: "", bio: "" },
