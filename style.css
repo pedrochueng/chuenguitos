@@ -445,9 +445,19 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   .js .passos__lista li.visivel:not(:last-child)::after { transform: none; }
 }
 
-/* Foto da clínica: aparece em cortina, da esquerda para a direita */
-.js .clinica__imagem.revelar img { clip-path: inset(0 100% 0 0); transition: clip-path 1.3s cubic-bezier(.7, 0, .2, 1) .2s; }
-.js .clinica__imagem.visivel img { clip-path: inset(0); }
+/* Foto da clínica: surge suave, abrindo do centro com leve zoom-out (curva de desaceleração, sem tranco) */
+.clinica__imagem { overflow: hidden; border-radius: 8rem .5rem .5rem .5rem; }
+.js .clinica__imagem.revelar img {
+  opacity: 0;
+  transform: scale(1.08);
+  clip-path: inset(6% 6% 6% 6% round 8rem .5rem .5rem .5rem);
+  transition:
+    opacity 1.2s cubic-bezier(.22, 1, .36, 1) .15s,
+    transform 2.2s cubic-bezier(.22, 1, .36, 1) .15s,
+    clip-path 1.8s cubic-bezier(.22, 1, .36, 1) .15s;
+  will-change: transform, clip-path;
+}
+.js .clinica__imagem.visivel img { opacity: 1; transform: none; clip-path: inset(0 round 8rem .5rem .5rem .5rem); }
 
 /* ===== Telas maiores ===== */
 @media (min-width: 640px) {
@@ -474,6 +484,6 @@ html:not(.js) .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .revelar { opacity: 1; transform: none; }
-  .js .clinica__imagem.revelar img { clip-path: none; }
+  .js .clinica__imagem.revelar img { clip-path: none; opacity: 1; transform: none; }
   .js .fases__lista li::before, .js .passos__lista li:not(:last-child)::after, .js .revelar .sobretitulo::before { transform: none; }
 }
