@@ -11,19 +11,19 @@
 const CLINICA = {
   // true = mostra os "profissionalExemplo" (fictícios) e uma faixa de aviso no topo.
   // ATENÇÃO: mude para false antes de publicar. Dados de exemplo nunca vão ao ar.
-  modoApresentacao: true,
+  modoApresentacao: false,
 
   // WhatsApp da clínica: usado por todas as especialidades e profissionais que não tenham número próprio
   whatsappGeral: "5521970766187",
 
-  // PENDENTE: e-mail oficial. Vazio = a seção "E-mail" não aparece (exceto no modo de apresentação).
-  email: "",
+  // E-mail oficial confirmado pela cliente (03/11/2026)
+  email: "neusavalle.couto@gmail.com",
   emailExemplo: "contato@example.com", // fictício, só no modo de apresentação
 
   contato: {
     endereco: "A definir", // trocar pelo endereço confirmado. Ex.: "Rua ..., 123 — Sala 4" (com "A definir" não há link de mapa)
     cidade: "",        // PENDENTE. Ex.: "Cidade — UF"
-    horarios: "",      // PENDENTE. Ex.: "Segunda a sexta, das 8h às 19h"
+    horarios: "Segunda a sexta, das 8h às 18h",
     instagram: "psicologa_neusavalle", // só o usuário, sem @
     orientacoes: "",   // PENDENTE (opcional). Ex.: "Estacionamento na rua lateral"
   },
@@ -42,11 +42,10 @@ const CLINICA = {
       ativa: true,
       descricao:
         "Atendimento psicológico com escuta cuidadosa, para compreender o que você está vivendo e construir caminhos possíveis no seu tempo.",
-      // PENDENTE: nome, registro (CRP) e foto autorizada, confirmados pela psicóloga
-      profissional: { nome: "", registro: "", bio: "", foto: "" },
+      // Confirmado pela cliente (03/11/2026). PENDENTE: foto profissional autorizada.
+      profissional: { nome: "Neusa Valle Couto", registro: "CRP 05/81032", bio: "Psicóloga clínica e responsável técnica do Espaço Terapêutico Entremeios.", foto: "" },
       profissionalExemplo: {
         nome: "Nome da Psicóloga",
-        foto: "assets/images/equipe/psicologia.webp",
         registro: "CRP 00/00000",
         bio: "Psicóloga clínica e fundadora da clínica. Atende adolescentes e adultos.",
       },
@@ -63,7 +62,6 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Camila Duarte",
-        foto: "assets/images/equipe/fonoaudiologia.webp",
         registro: "CRFa 0-00000",
         bio: "Fonoaudióloga com atuação em linguagem infantil e desenvolvimento da fala.",
       },
@@ -79,7 +77,6 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Rafael Moreira",
-        foto: "assets/images/equipe/psiquiatria.webp",
         registro: "CRM 00000 · RQE 00000",
         bio: "Médico psiquiatra, com atenção ao cuidado integrado entre especialidades.",
       },
@@ -95,7 +92,6 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Juliana Prates",
-        foto: "assets/images/equipe/terapias.webp",
         registro: "CREFITO 0-00000-TO",
         bio: "Terapeuta ocupacional com foco em desenvolvimento e integração sensorial.",
       },
@@ -111,7 +107,6 @@ const CLINICA = {
       profissional: { nome: "", registro: "", bio: "" },
       profissionalExemplo: {
         nome: "Beatriz Lima",
-        foto: "assets/images/equipe/infantil.webp",
         registro: "CRP 00/00000",
         bio: "Psicóloga com atuação em infância e orientação parental.",
       },

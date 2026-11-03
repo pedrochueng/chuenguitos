@@ -33,7 +33,8 @@ for (const esp of CLINICA.especialidades) {
   const p = profissionalDe(esp, false);
   assert.ok(p === null || p.exemplo === false, `${esp.id}: exemplo vazou com modo desligado`);
 }
-assert.equal(profissionalDe(CLINICA.especialidades[0], true).exemplo, true);
+assert.equal(profissionalDe(CLINICA.especialidades[1], true).exemplo, true, "sem profissional real, o exemplo aparece na apresentação");
+assert.equal(profissionalDe(CLINICA.especialidades[0], false).nome, "Neusa Valle Couto", "psicologia mostra a profissional real");
 assert.equal(profissionalDe({ profissional: { nome: "Real" }, profissionalExemplo: { nome: "X" } }, true).nome, "Real", "real tem prioridade");
 
 // Os números configurados em dados.js, quando preenchidos, precisam gerar link válido
